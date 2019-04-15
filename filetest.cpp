@@ -9,7 +9,7 @@ int main(){
 
 	string line;
 
-	//file format: PPG, FG%, 3PT%, FT%, APG, RPG, SPG, BPG, TOVPG, AST/TO ratio
+	//file format: Name, position, year, college, PPG, FG%, 3PT%, FT%, APG, RPG, SPG, BPG, TOVPG, AST/TO ratio
 	//STL/TO (steals to turnovers), BLK/TO(Blocks to turnovers), scoring efficiency
 	//Shooting efficiency, personal fouls per game, Games played
 
