@@ -25,6 +25,8 @@ struct player{
 	double pfpg; //personal fouls per game
 	int gamesPlayed; //games played
 
+	double aggregateScore; //formula coming soon
+
 	player* left = NULL;
 	player* right = NULL;
 };
