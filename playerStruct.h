@@ -24,6 +24,9 @@ struct player{
 	double sheff; //shooting efficiency
 	double pfpg; //personal fouls per game
 	int gamesPlayed; //games played
+
+	player* left = NULL;
+	player* right = NULL;
 };
 
 #endif
