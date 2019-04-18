@@ -25,7 +25,7 @@ public:
 
 	void maxHeapify(int index);
 	player* extractMax();
-  player* createPlayer(string s[], double d[]);
+  player* createPlayer(string s[], double d[], double aggregate);
 	void insertPlayer(player* p);
 	void print();
 	void deletePlayer(player* p);

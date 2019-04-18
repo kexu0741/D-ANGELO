@@ -64,11 +64,62 @@ void displayStartingMenu(){
 
 //FOR ADDING TO HEAP: CALL CREATEPLAYER
 
+//file format: PPG, FG%, 3PT%, FT%, APG, RPG, SPG, BPG, TOVPG, AST/TO ratio
+//STL/TO (steals to turnovers), BLK/TO(Blocks to turnovers), scoring efficiency
+//Shooting efficiency, personal fouls per game, Games played
+
 int main(){
 	displayStartingMenu();
 
-	
+	ifstream in;
+	in.open("stats.csv");
 
-	MaxHeap test(30);
+	string line;
+	string token;
+	char delim = ',';
+
+	MaxHeap test(100);
+
+	vector<string> components;
+	string strComponents[5];
+	int strCnt = 0;
+	double dblComponents[15];
+	int dblCnt = 0;
+
+	while (getline(in, line)){
+		stringstream ss(line);
+		while (getline(ss, token, delim)){
+			components.push_back(token);
+		}
+		for (int i = 0; i < components.size(); i++){
+			if (i == 0 || i == 1 || i == 2 || i == 3 || i == 19){
+				strComponents[strCnt] = components[i];
+				strCnt++;
+			}
+			else{
+				if (components[i] == "N/A"){
+					dblComponents[dblCnt] = 0;
+				}
+				else{
+					dblComponents[dblCnt] = stod(components[i]);
+				}
+				dblCnt++;
+			}
+		}
+
+		test.createPlayer(strComponents, dblComponents, 420);
+
+		strCnt = 0;
+		dblCnt = 0;
+		components.clear();
+	}
+
+	for (int i = 0; i < 10; i++){
+		cout << test.extractMax()->name << " -----> " << test.extractMax()->ppg << endl;
+	}
+
+
+
+
 	return 0;
 }

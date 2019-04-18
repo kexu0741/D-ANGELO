@@ -44,11 +44,22 @@ int MaxHeap::rightChild(int index)
   return ((2*index) + 2);
 }
 
-player* MaxHeap::createPlayer(string s[], double d[]){ //params: arrays passed in from main, read from file
+player* MaxHeap::createPlayer(string s[], double d[], double aggregate){ //params: arrays passed in from main, read from file
 	player* newPlayer = new player;
 	newPlayer->name = s[0];  
 	newPlayer->position = s[1];
-	newPlayer->grade = stoi(s[2]);
+	if (s[2] == "Freshman" || s[2] == "International" || s[2] == "N/A"){
+		newPlayer->grade = 1;
+	}
+	else if(s[2] == "Sophomore"){
+		newPlayer->grade = 2;
+	}
+	else if(s[3] == "Junior"){
+		newPlayer->grade = 3;
+	}
+	else if(s[4] == "Senior"){
+		newPlayer->grade = 4;
+	}
 	newPlayer->college = s[3];
 	newPlayer->gamesPlayed = stoi(s[4]); 
 
@@ -67,6 +78,8 @@ player* MaxHeap::createPlayer(string s[], double d[]){ //params: arrays passed i
 	newPlayer->sceff = d[12]; //scoring efficiency
 	newPlayer->sheff = d[13]; //shooting efficiency
 	newPlayer->pfpg = d[14];
+
+	newPlayer->aggregateScore = aggregate;
 
 	insertPlayer(newPlayer);
 
@@ -90,9 +103,9 @@ void MaxHeap::insertPlayer(player* p){
 			if (heapArr[parent(index)]->ppg < heapArr[index]->ppg){
 				swap(*&heapArr[index], *&heapArr[parent(index)]);
 			}
-			else if(heapArr[parent(index)]->aggregateScore < heapArr[index]->aggregateScore){
-				swap(*&heapArr[index], *&heapArr[parent(index)]);
-			}
+		}
+		else if(heapArr[parent(index)]->aggregateScore < heapArr[index]->aggregateScore){
+			swap(*&heapArr[index], *&heapArr[parent(index)]);
 		}
 		index = parent(index);
 	}
