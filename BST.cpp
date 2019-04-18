@@ -14,9 +14,19 @@ PlayerTree::PlayerTree()
 }
 PlayerTree::~PlayerTree()
 {
-
+  destroyRoster(root);
 }
+void PlayerTree::destroyRoster(PlayerNode *currNode)
+{
+  if(currNode!=NULL)
+  {
+      destroyRoster(currNode->left);
+      destroyRoster(currNode->right);
 
+      delete currNode;
+      currNode = NULL;
+  }
+}
 void print(PlayerNode *root)
 {
     if(root==NULL)
@@ -38,24 +48,24 @@ void PlayerTree::printRoster()
 {
     print(root);
 }
-PlayerNode *spot(PlayerNode *temp, string title)
+PlayerNode *spot(PlayerNode *temp, string name)
 {
 
-    if(title > temp->name)
+    if(name > temp->name)
     {
         if(temp->right!=NULL)
         {
-            temp=spot(temp->right, title);
+            temp=spot(temp->right, name);
         }
 
             return temp;
 
     }
-    else if(title < temp->name)
+    else if(name < temp->name)
     {
         if(temp->left!=NULL)
         {
-            temp=spot(temp->left, title);
+            temp=spot(temp->left, name);
         }
 
             return temp;
@@ -85,28 +95,49 @@ void PlayerTree::addPlayer(string name,string p, int g, string c, double p1, dou
 
 }
 
-void PlayerTree::printPlayerStat(string title)
+void PlayerTree::printPlayerStat(string name)
 {
   if(root==NULL)
   {
     cout << "Player not found." << endl;
       return;
   }
-  if(root->name == title)
+  if(root->name == name)
   {
-      cout << "Player Info:" << endl;
+      cout << "Player Stats:" << endl;
       cout << "==================" << endl;
       cout << "Name:" << root->name << endl;
+      cout << "Position: " << root->position << endl;
+      cout << "Grade: " << root->grade << endl;
+      cout << "College: " << root->college << endl;
+      cout << "Points Per Game: " << root->ppg << endl;
+      cout << "Field Goal Percentage: " << root->fgp << endl;
+      cout << "3-pointer percentage: " << root->threeptp << endl;
+      cout << "Free Throw Percentage: " << root->ftp << endl;
+      cout << "Assists Per Game: " << root->apg << endl;
+      cout << "Rebounds Per Game: " << root->rpg << endl;
+      cout << "Steals Per Game: " << root->spg << endl;
+      cout << "Blocks Per Game: " << root->bpg << endl;
+      cout << "Turnovers Per Game: " << root->tovpg << endl;
+      cout << "Assist to Turnover Ratio: " << root->astto << endl;
+      cout << "Steal to Turnover Ratio: " << root->stlto << endl;
+      cout << "Block to Turnover Ratio: " << root->blkto << endl;
+      cout << "Scoring Efficency: " << root->sceff << endl;
+      cout << "Shooting Efficency: " << root->sheff << endl;
+      cout << "Personal Fouls Per Game: " << root->pfpg << endl;
+      cout << "Total Games Played: " << root->gamesPlayed << endl;
+      cout << "Aggregate Impact Score: " << root->aggregateScore << endl;
+
   }
-  else if(root->name.compare(title) > 0)
+  else if(root->name.compare(name) > 0)
   {
     root = root->left;
-    printPlayerStat(title);
+    printPlayerStat(name);
   }
   else
   {
     root = root->right;
-    printPlayerStat(title);
+    printPlayerStat(name);
   }
 }
 PlayerNode* getMinValueNode(PlayerNode* currNode){
@@ -148,7 +179,6 @@ PlayerNode* PlayerTree::deletePlayerHelper(PlayerNode *currNode, string value)
       {
          PlayerNode *delNode = currNode;
         currNode = currNode->left;
-        cout << "REACH" << endl;
         delete delNode;
       }
       else
@@ -297,5 +327,13 @@ int main()
     }
   }
 
+  cout << "Roster of Players: " << endl;
   p.printRoster();
+  cout << "Deleting Admiral Schofield----------------------------------" << endl;
+  p.deletePlayer("Admiral Schofield");
+  p.printRoster();
+  cout << "-----------------------------------------------------------" << endl;
+  p.printPlayerStat("Zion Williamson");
+  cout << "-----------------------------------------------------------" << endl;
+  p.printRosterTree(5);
 }
