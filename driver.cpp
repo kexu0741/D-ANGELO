@@ -7,6 +7,8 @@
 //#include "MaxHeap.cpp"
 #include <vector>
 
+//TODO: FORMULA, IMPLEMENT TEAMS, IMPLEMENT MENU, MERGE AVNISH'S CODE
+
 using namespace std;
 
 void printInstructions(){
@@ -107,15 +109,17 @@ int main(){
 			}
 		}
 
-		test.createPlayer(strComponents, dblComponents, 420);
+		test.createPlayer(strComponents, dblComponents);
 
 		strCnt = 0;
 		dblCnt = 0;
 		components.clear();
 	}
 
+	//testing purposes 
+	cout << "Top 10 Prospects: "
 	for (int i = 0; i < 10; i++){
-		cout << test.extractMax()->name << " -----> " << test.extractMax()->ppg << endl;
+		cout << test.extractMax()->name << " -----> " << test.extractMax()->aggregateScore << endl;
 	}
 
 

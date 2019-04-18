@@ -44,7 +44,7 @@ int MaxHeap::rightChild(int index)
   return ((2*index) + 2);
 }
 
-player* MaxHeap::createPlayer(string s[], double d[], double aggregate){ //params: arrays passed in from main, read from file
+player* MaxHeap::createPlayer(string s[], double d[]){ //params: arrays passed in from main, read from file
 	player* newPlayer = new player;
 	newPlayer->name = s[0];  
 	newPlayer->position = s[1];
@@ -79,7 +79,54 @@ player* MaxHeap::createPlayer(string s[], double d[], double aggregate){ //param
 	newPlayer->sheff = d[13]; //shooting efficiency
 	newPlayer->pfpg = d[14];
 
-	newPlayer->aggregateScore = aggregate;
+	double ageMultiplier = 1;
+	double scoringMultiplier = 85.910;
+
+	if (newPlayer->grade == 1){
+		ageMultiplier = 10.0;
+		if (newPlayer->ppg > 20.0){
+			scoringMultiplier = 105.910;
+		}
+	}
+	else if (newPlayer->grade == 2){
+		ageMultiplier = 5.0;
+		if (newPlayer->ppg >= 20.0){
+			scoringMultiplier = 105.910;
+		}
+	}
+	else if (newPlayer->grade == 3){
+		ageMultiplier = 2.0;
+	}
+	else if (newPlayer->grade == 4){
+		ageMultiplier = 1.0;
+	}
+
+	//"inflated" PER- per game stats are used instead of aggregate stats
+	double PER = ((newPlayer->ppg * scoringMultiplier)
+
+	+ (newPlayer->spg * 83.897)
+
+	+ (newPlayer->threeptp * 51.757)
+
+	+ (newPlayer->ftp * 46.845)
+
+	+ (newPlayer->bpg * 39.190)
+
+	+ (newPlayer->blkto	* 39.190)
+
+	+ (newPlayer->apg * 84.677)
+
+	+ (newPlayer->rpg * 24.707)
+
+	- (newPlayer->pfpg * 17.174)
+
+	- ((1 - newPlayer->ftp) * 20.091)
+
+	- ((1 - newPlayer->fgp)	* 39.190)
+
+	- (newPlayer->tovpg * 33.897 )) * (ageMultiplier);
+
+	newPlayer->aggregateScore = PER;
 
 	insertPlayer(newPlayer);
 
