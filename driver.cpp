@@ -7,7 +7,7 @@
 //#include "MaxHeap.cpp"
 #include <vector>
 
-//TODO: FORMULA, IMPLEMENT TEAMS, IMPLEMENT MENU, MERGE AVNISH'S CODE
+//TODO: IMPLEMENT TEAMS, IMPLEMENT MENU, MERGE AVNISH'S CODE
 
 using namespace std;
 
@@ -23,6 +23,15 @@ void printInstructions(){
 	cout << "The user will be prompted with team needs, and as more" << endl;
 	cout << "needs are entered, D'ANGELO will give the user the best" << endl;
 	cout << "available player based on these team needs." << endl;
+	cout << endl;
+	cout << endl;
+	cout << "CALCULATION INFO: " << endl;
+	cout << "Best overall available prospects are calculated using a modified " << endl;
+	cout << "version of John Hollinger's Player Efficiency Rating (PER). " << endl;
+	cout << "Multipliers are modified, as an aggregate average for every stat "<< endl;
+	cout << "over all of college basketball is unfeasible." << endl;
+	cout << "There is also an added multiplier based on age, in order to factor in " << endl;
+	cout << "a player's 'untapped potential.'" << endl;
 	cout << endl;
 	cout << "Happy drafting!" << endl;
 	cout << "-----------------------------------------------------" << endl;
@@ -64,6 +73,90 @@ void displayStartingMenu(){
 	}
 }
 
+int displayDraftMenu(MaxHeap &h){ //ADD BST PARAM
+	vector<player*> temp;
+	for (int i = 0; i < 15; i++)
+		cout << endl;
+	cout << "Top 10 Available Prospects: " << endl;
+	for (int i = 0; i < 10; i++){
+		cout << i+1 << ". ";
+		player* curr = h.extractMax();
+		temp.push_back(curr);
+		cout << curr->name << ", " << curr->position
+		<< ", " << curr->college << ", " << curr->ppg << " ppg, "
+		<< curr->rpg << " rpg, " << curr->apg << " astpg" << endl;
+	}
+
+	for (int i = 0; i < temp.size(); i++){
+		h.insertPlayer(temp[i]);
+	}
+
+	temp.clear();
+
+	for (int i = 0; i < 5; i++)
+		cout << endl;
+	//add while loop for input
+	bool openMenu = true;
+	string userInput;
+
+	while (openMenu){
+		cout << "--------------------------------------" << endl; 
+		cout << "1. Auto Draft Best Available" << endl;
+		cout << "2. Enter Team Needs" << endl;
+		cout << "3. Search for Player" << endl;
+		cout << "4. Quit draft" << endl;
+		cout << "--------------------------------------" << endl; 
+
+		getline(cin, userInput);
+		player* curr = h.extractMax();
+
+		switch(stoi(userInput)){
+			case 1:
+				//delete from heap and the tree
+				cout << curr->name << ", " << curr->position
+				<< ", " << curr->college << ", " << curr->ppg << " ppg, "
+				<< curr->rpg << " rpg, " << curr->apg << " astpg " 
+				<< "---- drafted. " << endl;
+
+			break;
+
+			case 2:
+
+			break;
+
+			case 3:
+
+			break;
+
+			case 4:
+
+			openMenu = false;
+			break;
+
+		}
+
+		cout << endl;
+		cout << "Top 10 Available Prospects: " << endl;
+		for (int i = 0; i < 10; i++){
+			cout << i+1 << ". ";
+			player* curr = h.extractMax();
+			temp.push_back(curr);
+			cout << curr->name << ", " << curr->position
+			<< ", " << curr->college << ", " << curr->ppg << " ppg, "
+			<< curr->rpg << " rpg, " << curr->apg << " astpg" << endl;
+		}
+
+		for (int i = 0; i < temp.size(); i++){
+			h.insertPlayer(temp[i]);
+		}
+
+		temp.clear();
+
+
+	}
+
+}
+
 //FOR ADDING TO HEAP: CALL CREATEPLAYER
 
 //file format: PPG, FG%, 3PT%, FT%, APG, RPG, SPG, BPG, TOVPG, AST/TO ratio
@@ -80,7 +173,7 @@ int main(){
 	string token;
 	char delim = ',';
 
-	MaxHeap test(100);
+	MaxHeap best(100);
 
 	vector<string> components;
 	string strComponents[5];
@@ -109,19 +202,14 @@ int main(){
 			}
 		}
 
-		test.createPlayer(strComponents, dblComponents);
+		best.createPlayer(strComponents, dblComponents);
 
 		strCnt = 0;
 		dblCnt = 0;
 		components.clear();
 	}
-
-	//testing purposes 
-	cout << "Top 10 Prospects: "
-	for (int i = 0; i < 10; i++){
-		cout << test.extractMax()->name << " -----> " << test.extractMax()->aggregateScore << endl;
-	}
-
+	
+	int choice = displayDraftMenu(best);
 
 
 

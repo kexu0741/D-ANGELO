@@ -28,7 +28,7 @@ public:
   player* createPlayer(string s[], double d[]);
 	void insertPlayer(player* p);
 	void print();
-	void deletePlayer(player* p);
+	player* draftPlayer(player* p);
 };
 
 #endif

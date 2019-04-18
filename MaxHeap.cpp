@@ -17,7 +17,7 @@ MaxHeap::MaxHeap(int cap){
 }	
 
 MaxHeap::~MaxHeap(){
-
+	//delete the array
 }
 
 /*
@@ -46,7 +46,7 @@ int MaxHeap::rightChild(int index)
 
 player* MaxHeap::createPlayer(string s[], double d[]){ //params: arrays passed in from main, read from file
 	player* newPlayer = new player;
-	newPlayer->name = s[0];  
+	newPlayer->name = s[0]; 
 	newPlayer->position = s[1];
 	if (s[2] == "Freshman" || s[2] == "International" || s[2] == "N/A"){
 		newPlayer->grade = 1;
@@ -210,6 +210,6 @@ void MaxHeap::maxHeapify(int index){
 
 }
 
-// int main(){
+player* MaxHeap::draftPlayer(player* p){
 
-// }
+}
