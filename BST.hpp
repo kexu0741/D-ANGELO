@@ -68,8 +68,8 @@ public:
   void printPlayerStat(std::string name);
   void deletePlayer(std::string name);
   void printRosterTree( int space);
-  void printStat(string name);
 private:
   PlayerNode* deletePlayerHelper(PlayerNode *currNode, std::string value);
+  void destroyRoster(PlayerNode *currNode);
   PlayerNode *root;
 };
