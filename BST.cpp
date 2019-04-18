@@ -1,6 +1,11 @@
 #include <iostream>
 #include <string>
 #include "BST.hpp"
+#define COUNT 10
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <sstream>
 using namespace std;
 
 PlayerTree::PlayerTree()
@@ -29,7 +34,7 @@ void print(PlayerNode *root)
 		print(root->right);
 	}
 }
-void PlayerTree::printMovieInventory()
+void PlayerTree::printRoster()
 {
     print(root);
 }
@@ -57,9 +62,9 @@ PlayerNode *spot(PlayerNode *temp, string title)
 
     }
 }
-void PlayerTree::addMovieNode(string name)
+void PlayerTree::addPlayer(string name,string p, int g, string c, double p1, double f, double t, double f2, double a, double r, double s, double b ,double t2, double a2, double s2, double b2, double s3, double s4, double p2,  int g2, double a3)
 {
-  PlayerNode *add = new PlayerNode(name);
+  PlayerNode *add = new PlayerNode(name, p , g, c, p1, f, t, f2, a, r, s, b, t2, a2, s2, b2, s3, s4, p2, g2, a3);
   if(root==NULL)
   {
     root = add;
@@ -67,20 +72,20 @@ void PlayerTree::addMovieNode(string name)
   }
 
   PlayerNode *temp = root;
-  PlayerNode *a = spot(temp, name);
+  PlayerNode *z = spot(temp, name);
 
-  if(name > a->name)
+  if(name > z->name)
   {
-      a->right = add;
+      z->right = add;
   }
   else
   {
-      a->left = add;
+      z->left = add;
   }
 
 }
 
-void PlayerTree::findMovie(string title)
+void PlayerTree::printPlayerStat(string title)
 {
   if(root==NULL)
   {
@@ -92,19 +97,16 @@ void PlayerTree::findMovie(string title)
       cout << "Player Info:" << endl;
       cout << "==================" << endl;
       cout << "Name:" << root->name << endl;
-      // cout << "Title  :" << root->title << endl;
-      // cout << "Year   :" << root->year << endl;
-      // cout << "rating :" << root->rating << endl;
   }
   else if(root->name.compare(title) > 0)
   {
     root = root->left;
-    findMovie(title);
+    printPlayerStat(title);
   }
   else
   {
     root = root->right;
-    findMovie(title);
+    printPlayerStat(title);
   }
 }
 PlayerNode* getMinValueNode(PlayerNode* currNode){
@@ -114,7 +116,7 @@ PlayerNode* getMinValueNode(PlayerNode* currNode){
     }
     return getMinValueNode(currNode->left);
 }
-PlayerNode* PlayerTree::deleteNodeHelper(PlayerNode *currNode, string value)
+PlayerNode* PlayerTree::deletePlayerHelper(PlayerNode *currNode, string value)
 {
 
     if(currNode == NULL)
@@ -123,65 +125,177 @@ PlayerNode* PlayerTree::deleteNodeHelper(PlayerNode *currNode, string value)
     }
     else if(value < currNode->name)
     {
-      currNode->left = deleteNodeHelper(currNode->left, value);
+      currNode->left = deletePlayerHelper(currNode->left, value);
     }
     else if(value > currNode->name)
     {
-      currNode->right = deleteNodeHelper(currNode->right, value);
+      currNode->right = deletePlayerHelper(currNode->right, value);
     }
-   // We found the node with the value
     else
     {
-      //TODO Case : No child
       if(currNode->left == NULL && currNode->right == NULL)
       {
         delete currNode;
         currNode = NULL;
       }
-      //TODO Case : Only right child
       else if(currNode->left == NULL)
       {
         PlayerNode *delNode = currNode;
         currNode = currNode->right;
         delete delNode;
       }
-      //TODO Case : Only left child
       else if(currNode->right == NULL)
       {
          PlayerNode *delNode = currNode;
         currNode = currNode->left;
+        cout << "REACH" << endl;
         delete delNode;
       }
-  //     //TODO Case: Both left and right child
       else
       {
-        ///Replace with Minimum from right subtree
         string min = (getMinValueNode(currNode->right))->name;
         currNode->name = min;
-        currNode->right = deleteNodeHelper(currNode->right, min);
+        currNode->right = deletePlayerHelper(currNode->right, min);
       }
-  //
      }
    return currNode;
 }
-void PlayerTree::deleteNode(string v)
+void PlayerTree::deletePlayer(string v)
 {
-  deleteNodeHelper(root, v);
+  deletePlayerHelper(root, v);
 }
+void printRosterTreeHelper(PlayerNode *currNode, int space)
+{
+    // Base case
+    if (currNode == NULL)
+        return;
+
+    // Increase distance between levels
+    space += COUNT;
+
+    // Process right child first
+    printRosterTreeHelper(currNode->right, space);
+
+    // Print current node after space
+    // count
+    printf("\n");
+    for (int i = COUNT; i < space; i++)
+        printf(" ");
+    //printf("%d\n", currNode->name);
+    cout << currNode->name << endl;
+    // Process left child
+    printRosterTreeHelper(currNode->left, space);
+}
+
+void PlayerTree::printRosterTree( int space)
+{
+  printRosterTreeHelper(root, space);
+}
+// int main()
+// {
+
+  // PlayerTree();
+  // PlayerTree p;
+
+  // p.addPlayer("Peter Parker");
+  // p.addPlayer("Adam");
+  // p.addPlayer("Captain India");
+  // p.addPlayer("Wonder Woman");
+  // p.addPlayer("Zion Williamson");
+  // p.addPlayer("Chris Pratt");
+  // p.addPlayer("Batman");
+  // p.addPlayer("Loser");
+  // p.printRoster();
+  // cout << "----------------------" << endl;
+  // p.deletePlayer("Zion Williamson");
+  // p.printRoster();
+  //p.printRosterTree(8);
+// }
+string getGradeNum(string grade)
+{
+  if(grade=="Freshman")
+  {
+    return "9";
+  }
+  else if(grade=="Sophomore")
+  {
+    return "10";
+  }
+  else if(grade=="Junior")
+  {
+    return "11";
+  }
+  else if(grade=="Senior")
+  {
+    return "12";
+  }
+  else if(grade=="International")
+  {
+    return "0";
+  }
+  else
+  {
+    return "-1";
+  }
+}
+
+
 int main()
 {
   PlayerTree();
   PlayerTree p;
-  p.addMovieNode("Zion Williamson");
-  p.addMovieNode("Peter Parker");
-  p.addMovieNode("Adam's APple");
-  p.addMovieNode("Captain India");
-  p.addMovieNode("Wonder Woman");
-  p.addMovieNode("Chris Pratt");
-  p.addMovieNode("Batman");
-  p.addMovieNode("Loser");
-  p.printMovieInventory();
-  cout << "----------------------" << endl;
-  p.deleteNode("Zion Williamson");
-  p.printMovieInventory();
+  ifstream file;
+  file.open("stats.csv");
+  if(file.is_open())
+  {
+    string line = "";
+    int l = 0;
+  //  int last = 0;
+    //int spot = 0;
+    while(getline(file,line))
+    {
+      string data[21];
+      int count = 0;
+      int last = 0;
+      // if(l==0)
+      // {
+        for(int i=0; i<line.length(); i++)
+        {
+          if(line[i]==','|| i==line.length()-1)
+          {
+            data[count] = line.substr(last,i-last);
+            if(i==line.length()-1)
+            {
+              data[count]+=line[i];
+            }
+            //cout <<data[count]<< "|" << count <<endl;
+            count++;
+            //cout << count << endl;
+            last = i+1;
+          }
+        }
+        data[2] = getGradeNum(data[2]);
+        if(data[16]=="N/A")
+        {
+          data[16] = "-1";
+        }
+        if(data[17]=="N/A")
+        {
+          data[17] = "-1";
+        }
+       //cout << data[19] << endl;
+        p.addPlayer(data[0], data[1], stoi(data[2]),data[3],stod(data[4]),stod(data[5]),stod(data[6]),stod(data[7]),stod(data[8]),stod(data[9]),stod(data[10]),stod(data[11]),stod(data[12]),stod(data[13]),stod(data[14]),stod(data[15]),stod(data[16]),stod(data[17]), stod(data[18]),stoi(data[19]),stod(data[19]));
+      //}
+      //cout << data[0]<< endl;
+      // for(int i=0; i<21; i++)
+      // {
+      //   cout << data[i] << endl;
+      // }
+      // p.addPlayer(data[0], data[1], 1,"ad",1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0, 1.0,1,1.0);
+      l++;
+      //cout << data[2] << endl;
+    }
+  }
+
+  p.printRoster();
 }
