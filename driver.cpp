@@ -13,7 +13,7 @@ using namespace std;
 
 void printInstructions(){
 	cout << "-----------------------------------------------------" << endl;
-	cout << "D'ANGELO is an analytic tool for NBA scouts, general " << endl;
+	cout << "D'ANGELO is an analytical tool for NBA scouts, general " << endl;
 	cout << "managers, and draft enthusiasts." << endl;
 	cout << endl;
 	cout << "The user will go pick by pick, controlling all teams," << endl;
@@ -74,9 +74,10 @@ void displayStartingMenu(){
 }
 
 int displayDraftMenu(MaxHeap &h){ //ADD BST PARAM
-	vector<player*> temp;
+	vector<player*> temp; //temp vector for printing
 	for (int i = 0; i < 15; i++)
 		cout << endl;
+	cout << "---------------------------------------" << endl;
 	cout << "Top 10 Available Prospects: " << endl;
 	for (int i = 0; i < 10; i++){
 		cout << i+1 << ". ";
@@ -86,6 +87,7 @@ int displayDraftMenu(MaxHeap &h){ //ADD BST PARAM
 		<< ", " << curr->college << ", " << curr->ppg << " ppg, "
 		<< curr->rpg << " rpg, " << curr->apg << " astpg" << endl;
 	}
+	cout << "---------------------------------------" << endl;
 
 	for (int i = 0; i < temp.size(); i++){
 		h.insertPlayer(temp[i]);
@@ -108,11 +110,12 @@ int displayDraftMenu(MaxHeap &h){ //ADD BST PARAM
 		cout << "--------------------------------------" << endl; 
 
 		getline(cin, userInput);
-		player* curr = h.extractMax();
+		player* curr;
 
 		switch(stoi(userInput)){
 			case 1:
 				//delete from heap and the tree
+				curr = h.extractMax();
 				cout << curr->name << ", " << curr->position
 				<< ", " << curr->college << ", " << curr->ppg << " ppg, "
 				<< curr->rpg << " rpg, " << curr->apg << " astpg " 
@@ -121,22 +124,24 @@ int displayDraftMenu(MaxHeap &h){ //ADD BST PARAM
 			break;
 
 			case 2:
-
+				//new menu
 			break;
 
 			case 3:
-
+				//call for BST
 			break;
 
 			case 4:
-
+				//exits from menu
 			openMenu = false;
 			break;
 
 		}
 
 		cout << endl;
+		cout << "---------------------------------------" << endl;
 		cout << "Top 10 Available Prospects: " << endl;
+
 		for (int i = 0; i < 10; i++){
 			cout << i+1 << ". ";
 			player* curr = h.extractMax();
@@ -145,6 +150,8 @@ int displayDraftMenu(MaxHeap &h){ //ADD BST PARAM
 			<< ", " << curr->college << ", " << curr->ppg << " ppg, "
 			<< curr->rpg << " rpg, " << curr->apg << " astpg" << endl;
 		}
+
+		cout << "---------------------------------------" << endl;
 
 		for (int i = 0; i < temp.size(); i++){
 			h.insertPlayer(temp[i]);
