@@ -22,13 +22,13 @@ public:
 	int parent(int index);
 	int leftChild(int index);
 	int rightChild(int index);
-
 	void maxHeapify(int index);
 	player* extractMax();
   player* createPlayer(string s[], double d[]);
 	void insertPlayer(player* p);
 	void print();
-	player* draftPlayer(player* p);
+	void draftPlayer(string name);
+  	int draftPlayerHelper(string name);
 };
 
 #endif
