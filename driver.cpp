@@ -19,8 +19,10 @@ void printInstructions(){
 	cout << endl;
 	cout << "The user will go pick by pick, controlling all teams," << endl;
 	cout << "selecting players. The user will be prompted initially" << endl;
-	cout << "with two options: auto pick the best available player," << endl;
-	cout << "or select a player based on team needs." << endl;
+	cout << "with three options: "<< endl;
+	cout << "1) auto pick the best available player" << endl;
+	cout << "2) search for player by name to draft or view stats" << endl;
+	cout << "3) select a player based on team needs." << endl;
 	cout << "The user will be prompted with team needs, and as more" << endl;
 	cout << "needs are entered, D'ANGELO will give the user the best" << endl;
 	cout << "available player based on these team needs." << endl;
@@ -118,6 +120,7 @@ int displayDraftMenu(MaxHeap &h, PlayerTree &t){ //ADD BST PARAM
 			case 1:
 				//delete from heap and the tree
 				curr = h.extractMax();
+				t.deletePlayer(curr->name);
 				cout << curr->name << ", " << curr->position
 				<< ", " << curr->college << ", " << curr->ppg << " ppg, "
 				<< curr->rpg << " rpg, " << curr->apg << " astpg "
@@ -135,7 +138,6 @@ int displayDraftMenu(MaxHeap &h, PlayerTree &t){ //ADD BST PARAM
         cout << "Enter player name: " << endl;
         cin.ignore();
         getline(cin, n);
-        cout << "LOOKING FOR:::: " << n << "|||||||" << endl;
         curr = t.findPlayer(n);
         if(curr!=NULL)
         {
@@ -158,6 +160,7 @@ int displayDraftMenu(MaxHeap &h, PlayerTree &t){ //ADD BST PARAM
         				<< ", " << curr->college << ", " << curr->ppg << " ppg, "
         				<< curr->rpg << " rpg, " << curr->apg << " astpg "
         				<< "---- drafted. " << endl;
+								h.draftPlayer(curr->name);
                 t.deletePlayer(n);
                 menu = true;
                 break;
