@@ -72,9 +72,22 @@ player *spot(player *temp, string name)
 
     }
 }
-void PlayerTree::addPlayer(string name,string p, int g, string c, double p1, double f, double t, double f2, double a, double r, double s, double b ,double t2, double a2, double s2, double b2, double s3, double s4, double p2,  int g2, double a3)
+void PlayerTree::addPlayer(string s[], double d[])
 {
-  player *add = new player(name, p , g, c, p1, f, t, f2, a, r, s, b, t2, a2, s2, b2, s3, s4, p2, g2, a3);
+  int g;
+  if (s[2] == "Freshman" || s[2] == "International" || s[2] == "N/A"){
+		g = 1;
+	}
+	else if(s[2] == "Sophomore"){
+		g = 2;
+	}
+	else if(s[3] == "Junior"){
+		g = 3;
+	}
+	else if(s[4] == "Senior"){
+		g = 4;
+	}
+  player *add = new player(s[0], s[1] , g, s[3], d[0], d[1], d[2], d[3], d[4], d[5], d[6], d[7], d[8], d[9], d[10], d[11], d[12], d[13], d[14], stoi(s[4]));
   if(root==NULL)
   {
     root = add;
@@ -82,9 +95,9 @@ void PlayerTree::addPlayer(string name,string p, int g, string c, double p1, dou
   }
 
   player *temp = root;
-  player *z = spot(temp, name);
+  player *z = spot(temp, s[0]);
 
-  if(name > z->name)
+  if(s[0] > z->name)
   {
       z->right = add;
   }
@@ -127,7 +140,7 @@ void PlayerTree::printPlayerStat(string name)
       cout << "Personal Fouls Per Game: " << root->pfpg << endl;
       cout << "Total Games Played: " << root->gamesPlayed << endl;
       cout << "Aggregate Impact Score: " << root->aggregateScore << endl;
-
+      cout << "==================" << endl;
   }
   else if(root->name.compare(name) > 0)
   {
@@ -146,6 +159,27 @@ player* getMinValueNode(player* currNode){
       return currNode;
     }
     return getMinValueNode(currNode->left);
+}
+
+player* findPlayerHelper(player* currNode, string name)
+{
+  if(currNode == NULL)
+      return NULL;
+
+  if(currNode->name == name)
+      return currNode;
+
+  if(currNode->name > name)
+      return findPlayerHelper(currNode->left, name);
+
+  return findPlayerHelper(currNode->right, name);
+}
+
+player* PlayerTree::findPlayer(string name)
+{
+  player* temp = root;
+  player *s = findPlayerHelper(temp, name);
+  return s;
 }
 player* PlayerTree::deletePlayerHelper(player *currNode, string value)
 {
@@ -243,57 +277,3 @@ string getGradeNum(string grade)
   }
 }
 
-
-int main()
-{
-  PlayerTree();
-  PlayerTree p;
-  ifstream file;
-  file.open("stats.csv");
-  if(file.is_open())
-  {
-    string line = "";
-    int l = 0;
-    while(getline(file,line))
-    {
-      string data[21];
-      int count = 0;
-      int last = 0;
-        for(int i=0; i<line.length(); i++)
-        {
-          if(line[i]==','|| i==line.length()-1)
-          {
-            data[count] = line.substr(last,i-last);
-            if(i==line.length()-1)
-            {
-              data[count]+=line[i];
-            }
-            count++;
-            last = i+1;
-          }
-        }
-        data[2] = getGradeNum(data[2]);
-        if(data[16]=="N/A")
-        {
-          data[16] = "-1";
-        }
-        if(data[17]=="N/A")
-        {
-          data[17] = "-1";
-        }
-        p.addPlayer(data[0], data[1], stoi(data[2]),data[3],stod(data[4]),stod(data[5]),stod(data[6]),stod(data[7]),stod(data[8]),stod(data[9]),stod(data[10]),stod(data[11]),stod(data[12]),stod(data[13]),stod(data[14]),stod(data[15]),stod(data[16]),stod(data[17]), stod(data[18]),stoi(data[19]),stod(data[19]));
-
-      l++;
-    }
-  }
-
-  cout << "Roster of Players: " << endl;
-  p.printRoster();
-  cout << "Deleting Admiral Schofield----------------------------------" << endl;
-  p.deletePlayer("Admiral Schofield");
-  p.printRoster();
-  cout << "-----------------------------------------------------------" << endl;
-  p.printPlayerStat("Zion Williamson");
-  cout << "-----------------------------------------------------------" << endl;
-  p.printRosterTree(5);
-}
