@@ -2,6 +2,7 @@
 #include <fstream>
 #include <sstream>
 #include "MaxHeap.hpp"
+#include "BST.hpp"
 // #include "playerStruct.h"
 // #include "MaxHeap.hpp"
 //#include "MaxHeap.cpp"
@@ -66,14 +67,14 @@ void displayStartingMenu(){
 			if (startInput == "2"){
 				start = true;
 			}
-		}	
+		}
 		else{
 			cout << "invalid input." << endl;
 		}
 	}
 }
 
-int displayDraftMenu(MaxHeap &h){ //ADD BST PARAM
+int displayDraftMenu(MaxHeap &h, PlayerTree &t){ //ADD BST PARAM
 	vector<player*> temp; //temp vector for printing
 	for (int i = 0; i < 15; i++)
 		cout << endl;
@@ -99,26 +100,27 @@ int displayDraftMenu(MaxHeap &h){ //ADD BST PARAM
 		cout << endl;
 	//add while loop for input
 	bool openMenu = true;
-	string userInput;
+	int userInput;
 
 	while (openMenu){
-		cout << "--------------------------------------" << endl; 
+		cout << "--------------------------------------" << endl;
 		cout << "1. Auto Draft Best Available" << endl;
 		cout << "2. Enter Team Needs" << endl;
 		cout << "3. Search for Player" << endl;
 		cout << "4. Quit draft" << endl;
-		cout << "--------------------------------------" << endl; 
+		cout << "--------------------------------------" << endl;
 
-		getline(cin, userInput);
+		//getline(cin, userInput);
+    cin >> userInput;
 		player* curr;
 
-		switch(stoi(userInput)){
+		switch(userInput){
 			case 1:
 				//delete from heap and the tree
 				curr = h.extractMax();
 				cout << curr->name << ", " << curr->position
 				<< ", " << curr->college << ", " << curr->ppg << " ppg, "
-				<< curr->rpg << " rpg, " << curr->apg << " astpg " 
+				<< curr->rpg << " rpg, " << curr->apg << " astpg "
 				<< "---- drafted. " << endl;
 
 			break;
@@ -128,8 +130,52 @@ int displayDraftMenu(MaxHeap &h){ //ADD BST PARAM
 			break;
 
 			case 3:
+      {
+        string n = "";
+        cout << "Enter player name: " << endl;
+        cin.ignore();
+        getline(cin, n);
+        cout << "LOOKING FOR:::: " << n << "|||||||" << endl;
+        curr = t.findPlayer(n);
+        if(curr!=NULL)
+        {
+          int choice;
+          bool menu = false;
+          while(menu==false)
+          {
+            cout << "1. View Stats" << endl << "2. Draft Player" << endl <<"3. Discard" << endl;
+            cin >> choice;
+            switch(choice)
+            {
+              case 1:
+              {
+                t.printPlayerStat(n);
+                break;
+              }
+              case 2:
+              {
+                cout << curr->name << ", " << curr->position
+        				<< ", " << curr->college << ", " << curr->ppg << " ppg, "
+        				<< curr->rpg << " rpg, " << curr->apg << " astpg "
+        				<< "---- drafted. " << endl;
+                t.deletePlayer(n);
+                menu = true;
+                break;
+              }
+              case 3:
+              {
+                menu = true;
+              }
+            }
+          }
+        }
+        else
+        {
+          cout <<  n << " Not Found" << endl;
+        }
 				//call for BST
-			break;
+			  break;
+      }
 
 			case 4:
 				//exits from menu
@@ -181,7 +227,8 @@ int main(){
 	char delim = ',';
 
 	MaxHeap best(100);
-
+  PlayerTree();
+  PlayerTree tree;
 	vector<string> components;
 	string strComponents[5];
 	int strCnt = 0;
@@ -210,15 +257,13 @@ int main(){
 		}
 
 		best.createPlayer(strComponents, dblComponents);
-
-		strCnt = 0;
+    tree.addPlayer(strComponents, dblComponents);
+    strCnt = 0;
 		dblCnt = 0;
 		components.clear();
 	}
-	
-	int choice = displayDraftMenu(best);
 
-
+	int choice = displayDraftMenu(best, tree);
 
 	return 0;
 }
