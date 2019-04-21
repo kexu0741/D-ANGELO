@@ -139,7 +139,6 @@ void PlayerTree::printPlayerStat(string name)
       cout << "Shooting Efficency: " << root->sheff << endl;
       cout << "Personal Fouls Per Game: " << root->pfpg << endl;
       cout << "Total Games Played: " << root->gamesPlayed << endl;
-      cout << "Aggregate Impact Score: " << root->aggregateScore << endl;
       cout << "==================" << endl;
   }
   else if(root->name.compare(name) > 0)

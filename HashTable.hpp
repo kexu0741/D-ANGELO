@@ -47,7 +47,7 @@ class HashTable
   	Purpose: inserts a node with data as 'key' into the Hash Table
     return: false if 'key' already exists in the table, otherwise true
   	*/
-    bool insertItem(string name,string p, int g, string c, double p1, double f, double t, double f2, double a, double r, double s, double b ,double t2, double a2, double s2, double b2, double s3, double s4, double p2,  int g2, double a3);
+    bool insertItem(player* n);
 
     /*
   	Method Name: hashFunction

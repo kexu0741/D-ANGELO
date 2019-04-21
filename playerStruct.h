@@ -25,7 +25,8 @@ struct player{
 	double pfpg; //personal fouls per game
 	int gamesPlayed; //games played
 
-	double aggregateScore; //formula coming soon
+	double aggregateScore; //Modified Hollinger PER calculation
+	int aboveAverageCount;
 
 	player* left = NULL;
 	player* right = NULL;

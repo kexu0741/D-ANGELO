@@ -129,56 +129,104 @@ int displayDraftMenu(MaxHeap &h, PlayerTree &t){ //ADD BST PARAM
 			break;
 
 			case 2:
-				//new menu
+			{
+				int choice;
+
+				bool scoring = false;
+				bool playmaking = false;
+				bool perimD = false;
+				bool inD = false;
+				bool shooting = false;
+
+				bool menu = false;
+				while (!menu){
+					cout << "Enter ALL desired team needs before hitting finish." << endl;
+					cout << "1. Scoring" << endl;
+					cout << "2. Playmaking" << endl;
+					cout << "3. Perimeter Defense" << endl;
+					cout << "4. Interior Defense" << endl;
+					cout << "5. Shooting" << endl;
+					cout << "6. Finished" << endl;
+
+					cin >> choice;
+					switch(choice){
+						case 1:
+							cout << "Scoring added." << endl;
+						break;
+
+						case 2:
+							cout << "Playmaking added." << endl;
+
+						break;
+
+						case 3:
+							cout << "Perimeter Defense added." << endl;
+						break;
+
+						case 4:
+							cout << "Interior Defense added." << endl;
+						break;
+
+						case 5:
+							cout << "Shooting added." << endl;
+						break;
+
+						case 6: 
+							menu = true;
+						break;
+					}
+				}
+				//print recommended prospects
+			}
 			break;
 
 			case 3:
-      {
-        string n = "";
-        cout << "Enter player name: " << endl;
-        cin.ignore();
-        getline(cin, n);
-        curr = t.findPlayer(n);
-        if(curr!=NULL)
-        {
-          int choice;
-          bool menu = false;
-          while(menu==false)
-          {
-            cout << "1. View Stats" << endl << "2. Draft Player" << endl <<"3. Discard" << endl;
-            cin >> choice;
-            switch(choice)
-            {
-              case 1:
-              {
-                t.printPlayerStat(n);
-                break;
-              }
-              case 2:
-              {
-                cout << curr->name << ", " << curr->position
-        				<< ", " << curr->college << ", " << curr->ppg << " ppg, "
-        				<< curr->rpg << " rpg, " << curr->apg << " astpg "
-        				<< "---- drafted. " << endl;
+		    {
+		        string n = "";
+		        cout << "Enter player name: " << endl;
+		        cin.ignore();
+		        getline(cin, n);
+		        curr = t.findPlayer(n);
+		        if(curr!=NULL)
+		        {
+		          int choice;
+		          bool menu = false;
+		          while(menu==false)
+		          {
+		            cout << "1. View Stats" << endl << "2. Draft Player" << endl <<"3. Discard" << endl;
+		            cin >> choice;
+		            switch(choice)
+		            {
+		              case 1:
+		              {
+		                t.printPlayerStat(n);
+		                break;
+		              }
+		              case 2:
+		              {
+		                cout << curr->name << ", " << curr->position
+		        				<< ", " << curr->college << ", " << curr->ppg << " ppg, "
+		        				<< curr->rpg << " rpg, " << curr->apg << " astpg "
+		        				<< "---- drafted. " << endl;
 								h.draftPlayer(curr->name);
-                t.deletePlayer(n);
-                menu = true;
-                break;
-              }
-              case 3:
-              {
-                menu = true;
-              }
-            }
-          }
-        }
-        else
-        {
-          cout <<  n << " Not Found" << endl;
-        }
-				//call for BST
-			  break;
-      }
+		                		t.deletePlayer(n);
+		                		menu = true;
+		                break;
+		              }
+		              case 3:
+		              {
+		                menu = true;
+		              }
+		            }
+		          }
+		        }
+		        else
+		        {
+		          cout <<  n << " Not Found" << endl;
+		        }
+						//call for BST
+				break;
+		      }
 
 			case 4:
 				//exits from menu
@@ -230,8 +278,8 @@ int main(){
 	char delim = ',';
 
 	MaxHeap best(100);
-  PlayerTree();
-  PlayerTree tree;
+	PlayerTree();
+	PlayerTree tree;
 	vector<string> components;
 	string strComponents[5];
 	int strCnt = 0;
@@ -260,8 +308,8 @@ int main(){
 		}
 
 		best.createPlayer(strComponents, dblComponents);
-    tree.addPlayer(strComponents, dblComponents);
-    strCnt = 0;
+	    tree.addPlayer(strComponents, dblComponents);
+	    strCnt = 0;
 		dblCnt = 0;
 		components.clear();
 	}
