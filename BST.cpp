@@ -16,7 +16,7 @@ PlayerTree::~PlayerTree()
 {
   destroyRoster(root);
 }
-void PlayerTree::destroyRoster(PlayerNode *currNode)
+void PlayerTree::destroyRoster(player *currNode)
 {
   if(currNode!=NULL)
   {
@@ -27,7 +27,7 @@ void PlayerTree::destroyRoster(PlayerNode *currNode)
       currNode = NULL;
   }
 }
-void print(PlayerNode *root)
+void print(player *root)
 {
     if(root==NULL)
     {
@@ -48,7 +48,7 @@ void PlayerTree::printRoster()
 {
     print(root);
 }
-PlayerNode *spot(PlayerNode *temp, string name)
+player *spot(player *temp, string name)
 {
 
     if(name > temp->name)
@@ -74,15 +74,15 @@ PlayerNode *spot(PlayerNode *temp, string name)
 }
 void PlayerTree::addPlayer(string name,string p, int g, string c, double p1, double f, double t, double f2, double a, double r, double s, double b ,double t2, double a2, double s2, double b2, double s3, double s4, double p2,  int g2, double a3)
 {
-  PlayerNode *add = new PlayerNode(name, p , g, c, p1, f, t, f2, a, r, s, b, t2, a2, s2, b2, s3, s4, p2, g2, a3);
+  player *add = new player(name, p , g, c, p1, f, t, f2, a, r, s, b, t2, a2, s2, b2, s3, s4, p2, g2, a3);
   if(root==NULL)
   {
     root = add;
     return;
   }
 
-  PlayerNode *temp = root;
-  PlayerNode *z = spot(temp, name);
+  player *temp = root;
+  player *z = spot(temp, name);
 
   if(name > z->name)
   {
@@ -140,14 +140,14 @@ void PlayerTree::printPlayerStat(string name)
     printPlayerStat(name);
   }
 }
-PlayerNode* getMinValueNode(PlayerNode* currNode){
+player* getMinValueNode(player* currNode){
 
     if(currNode->left == NULL){
       return currNode;
     }
     return getMinValueNode(currNode->left);
 }
-PlayerNode* PlayerTree::deletePlayerHelper(PlayerNode *currNode, string value)
+player* PlayerTree::deletePlayerHelper(player *currNode, string value)
 {
 
     if(currNode == NULL)
@@ -171,13 +171,13 @@ PlayerNode* PlayerTree::deletePlayerHelper(PlayerNode *currNode, string value)
       }
       else if(currNode->left == NULL)
       {
-        PlayerNode *delNode = currNode;
+        player *delNode = currNode;
         currNode = currNode->right;
         delete delNode;
       }
       else if(currNode->right == NULL)
       {
-         PlayerNode *delNode = currNode;
+         player *delNode = currNode;
         currNode = currNode->left;
         delete delNode;
       }
@@ -194,26 +194,19 @@ void PlayerTree::deletePlayer(string v)
 {
   deletePlayerHelper(root, v);
 }
-void printRosterTreeHelper(PlayerNode *currNode, int space)
+void printRosterTreeHelper(player *currNode, int space)
 {
-    // Base case
     if (currNode == NULL)
         return;
 
-    // Increase distance between levels
     space += COUNT;
 
-    // Process right child first
     printRosterTreeHelper(currNode->right, space);
 
-    // Print current node after space
-    // count
     printf("\n");
     for (int i = COUNT; i < space; i++)
         printf(" ");
-    //printf("%d\n", currNode->name);
     cout << currNode->name << endl;
-    // Process left child
     printRosterTreeHelper(currNode->left, space);
 }
 
@@ -221,26 +214,7 @@ void PlayerTree::printRosterTree( int space)
 {
   printRosterTreeHelper(root, space);
 }
-// int main()
-// {
 
-  // PlayerTree();
-  // PlayerTree p;
-
-  // p.addPlayer("Peter Parker");
-  // p.addPlayer("Adam");
-  // p.addPlayer("Captain India");
-  // p.addPlayer("Wonder Woman");
-  // p.addPlayer("Zion Williamson");
-  // p.addPlayer("Chris Pratt");
-  // p.addPlayer("Batman");
-  // p.addPlayer("Loser");
-  // p.printRoster();
-  // cout << "----------------------" << endl;
-  // p.deletePlayer("Zion Williamson");
-  // p.printRoster();
-  //p.printRosterTree(8);
-// }
 string getGradeNum(string grade)
 {
   if(grade=="Freshman")
@@ -280,15 +254,11 @@ int main()
   {
     string line = "";
     int l = 0;
-  //  int last = 0;
-    //int spot = 0;
     while(getline(file,line))
     {
       string data[21];
       int count = 0;
       int last = 0;
-      // if(l==0)
-      // {
         for(int i=0; i<line.length(); i++)
         {
           if(line[i]==','|| i==line.length()-1)
@@ -298,9 +268,7 @@ int main()
             {
               data[count]+=line[i];
             }
-            //cout <<data[count]<< "|" << count <<endl;
             count++;
-            //cout << count << endl;
             last = i+1;
           }
         }
@@ -313,17 +281,9 @@ int main()
         {
           data[17] = "-1";
         }
-       //cout << data[19] << endl;
         p.addPlayer(data[0], data[1], stoi(data[2]),data[3],stod(data[4]),stod(data[5]),stod(data[6]),stod(data[7]),stod(data[8]),stod(data[9]),stod(data[10]),stod(data[11]),stod(data[12]),stod(data[13]),stod(data[14]),stod(data[15]),stod(data[16]),stod(data[17]), stod(data[18]),stoi(data[19]),stod(data[19]));
-      //}
-      //cout << data[0]<< endl;
-      // for(int i=0; i<21; i++)
-      // {
-      //   cout << data[i] << endl;
-      // }
-      // p.addPlayer(data[0], data[1], 1,"ad",1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0, 1.0,1,1.0);
+
       l++;
-      //cout << data[2] << endl;
     }
   }
 
