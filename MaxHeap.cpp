@@ -14,7 +14,7 @@ MaxHeap::MaxHeap(int cap){
 	currentSize = 0;
 	capacity = cap;
 	heapArr = new player*[capacity];
-}	
+}
 
 MaxHeap::~MaxHeap(){
 	//delete the array
@@ -46,7 +46,7 @@ int MaxHeap::rightChild(int index)
 
 player* MaxHeap::createPlayer(string s[], double d[]){ //params: arrays passed in from main, read from file
 	player* newPlayer = new player;
-	newPlayer->name = s[0]; 
+	newPlayer->name = s[0];
 	newPlayer->position = s[1];
 	if (s[2] == "Freshman" || s[2] == "International" || s[2] == "N/A"){
 		newPlayer->grade = 1;
@@ -61,7 +61,7 @@ player* MaxHeap::createPlayer(string s[], double d[]){ //params: arrays passed i
 		newPlayer->grade = 4;
 	}
 	newPlayer->college = s[3];
-	newPlayer->gamesPlayed = stoi(s[4]); 
+	newPlayer->gamesPlayed = stoi(s[4]);
 
 	newPlayer->ppg = d[0];
 	newPlayer->fgp = d[1];
@@ -209,7 +209,21 @@ void MaxHeap::maxHeapify(int index){
 	}
 
 }
-
-player* MaxHeap::draftPlayer(player* p){
-
+int MaxHeap::draftPlayerHelper(string name)
+{
+	for(int i=0; i<capacity; i++)
+	{
+		if(heapArr[i]->name == name)
+		{
+			 return i;
+		}
+	}
+}
+void MaxHeap::draftPlayer(string name)
+{
+	int spot = draftPlayerHelper(name);
+	heapArr[spot] = heapArr[currentSize-1];
+	currentSize--;
+	maxHeapify(spot);
+	cout << "REMOVING " << name << " FROM HEAP : " << endl;
 }
