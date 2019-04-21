@@ -225,5 +225,4 @@ void MaxHeap::draftPlayer(string name)
 	heapArr[spot] = heapArr[currentSize-1];
 	currentSize--;
 	maxHeapify(spot);
-	cout << "REMOVING " << name << " FROM HEAP : " << endl;
 }
