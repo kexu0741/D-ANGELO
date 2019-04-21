@@ -29,9 +29,10 @@ struct player{
 
 	player* left = NULL;
 	player* right = NULL;
+	player* next = NULL;
 
-	player(){}
-	  player(string n, string p, int g, string c, double p1, double f, double t, double f2, double a, double r, double s, double b ,double t2, double a2, double s2, double b2, double s3, double s4,double p2,  int g2, double a3)
+		player(){}
+	  player(string n, string p, int g, string c, double p1, double f, double t, double f2, double a, double r, double s, double b ,double t2, double a2, double s2, double b2, double s3, double s4,double p2,  int g2)
 	  {
 	    name = n;
 	    position = p;
@@ -53,7 +54,7 @@ struct player{
 	    sheff = s4;
 	    pfpg = p2;
 	    gamesPlayed = g2;
-	    aggregateScore = a3;
+	    //aggregateScore = a3;
 	  }
 };
 
