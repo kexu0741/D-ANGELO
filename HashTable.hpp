@@ -29,7 +29,7 @@ class HashTable
   	Purpose: Create a node with data as 'key'
     return: pointer to the new node
   	*/
-    player* createNode(string name,string p, int g, string c, double p1, double f, double t, double f2, double a, double r, double s, double b ,double t2, double a2, double s2, double b2, double s3, double s4, double p2,  int g2, double a3);
+  	player* createNode(string s[], double d[]);
 
     public:
 
@@ -76,7 +76,13 @@ class HashTable
   	*/
     player* searchItem(player* p);
 
-    void buildTable(MaxHeap &h);
+    void deletePlayer(player* p);
+
+    void getAverages(MaxHeap &h);
+
+    vector<player*> getNthBucket(int bucket);
+
+    //void buildTable(MaxHeap h);
 };
 
 #endif

@@ -17,7 +17,7 @@ MaxHeap::MaxHeap(int cap){
 }
 
 MaxHeap::~MaxHeap(){
-	//delete the array
+	delete[] heapArr;
 }
 
 /*
