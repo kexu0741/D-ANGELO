@@ -429,6 +429,8 @@ int displayDraftMenu(MaxHeap &h, PlayerTree &t, HashTable ht){ //ADD BST PARAM
 
 	}
 
+	cout << "Draft Finished." << endl;
+
 }
 
 //FOR ADDING TO HEAP: CALL CREATEPLAYER
