@@ -8,15 +8,15 @@
 #include <sstream>
 using namespace std;
 
-PlayerTree::PlayerTree()
+PlayerTree::PlayerTree() //constructor for the root of the tree
 {
   root = nullptr;
 }
-PlayerTree::~PlayerTree()
+PlayerTree::~PlayerTree() //destructor for the tree
 {
   destroyRoster(root);
 }
-void PlayerTree::destroyRoster(player *currNode)
+void PlayerTree::destroyRoster(player *currNode) //helper for the tree destructor
 {
   if(currNode!=NULL)
   {
@@ -27,7 +27,7 @@ void PlayerTree::destroyRoster(player *currNode)
       currNode = NULL;
   }
 }
-void print(player *root)
+void print(player *root) //helper function for the print function
 {
     if(root==NULL)
     {
@@ -44,11 +44,11 @@ void print(player *root)
 		print(root->right);
 	}
 }
-void PlayerTree::printRoster()
+void PlayerTree::printRoster() //prints all players, used for testing
 {
     print(root);
 }
-player *spot(player *temp, string name)
+player *spot(player *temp, string name) //returns the spot of where in the tree to add the player
 {
 
     if(name > temp->name)
@@ -72,7 +72,7 @@ player *spot(player *temp, string name)
 
     }
 }
-void PlayerTree::addPlayer(string s[], double d[])
+void PlayerTree::addPlayer(string s[], double d[]) //adds a player to the tree of players
 {
   int g;
   if (s[2] == "Freshman" || s[2] == "International" || s[2] == "N/A"){
@@ -95,7 +95,7 @@ void PlayerTree::addPlayer(string s[], double d[])
   }
 
   player *temp = root;
-  player *z = spot(temp, s[0]);
+  player *z = spot(temp, s[0]); //helper function called to find where to add the new node
 
   if(s[0] > z->name)
   {
@@ -108,7 +108,7 @@ void PlayerTree::addPlayer(string s[], double d[])
 
 }
 
-void PlayerTree::printPlayerStat(string name)
+void PlayerTree::printPlayerStat(string name) //prints the player stats for user viewing
 {
   if(root==NULL)
   {
@@ -151,15 +151,15 @@ void PlayerTree::printPlayerStat(string name)
     printPlayerStat(name);
   }
 }
-player* getMinValueNode(player* currNode){
-
+player* getMinValueNode(player* currNode) //minds the player with the smallest aggregate score
+{
     if(currNode->left == NULL){
       return currNode;
     }
     return getMinValueNode(currNode->left);
 }
 
-player* findPlayerHelper(player* currNode, string name)
+player* findPlayerHelper(player* currNode, string name) //helper function to search for a player
 {
   if(currNode == NULL)
       return NULL;
@@ -173,13 +173,13 @@ player* findPlayerHelper(player* currNode, string name)
   return findPlayerHelper(currNode->right, name);
 }
 
-player* PlayerTree::findPlayer(string name)
+player* PlayerTree::findPlayer(string name) //finds a player by name for the user to draft, discard, or view stats
 {
   player* temp = root;
   player *s = findPlayerHelper(temp, name);
   return s;
 }
-player* PlayerTree::deletePlayerHelper(player *currNode, string value)
+player* PlayerTree::deletePlayerHelper(player *currNode, string value) //helps take out a player from the tree
 {
 
     if(currNode == NULL)
@@ -222,11 +222,11 @@ player* PlayerTree::deletePlayerHelper(player *currNode, string value)
      }
    return currNode;
 }
-void PlayerTree::deletePlayer(string v)
+void PlayerTree::deletePlayer(string v) //deletes player from the tree if they have been drafted
 {
   deletePlayerHelper(root, v);
 }
-void printRosterTreeHelper(player *currNode, int space)
+void printRosterTreeHelper(player *currNode, int space) //helper to print the entire roster of prospects
 {
     if (currNode == NULL)
         return;
@@ -242,12 +242,12 @@ void printRosterTreeHelper(player *currNode, int space)
     printRosterTreeHelper(currNode->left, space);
 }
 
-void PlayerTree::printRosterTree( int space)
+void PlayerTree::printRosterTree( int space) //prints all the college prospects, used for testing
 {
   printRosterTreeHelper(root, space);
 }
 
-string getGradeNum(string grade)
+string getGradeNum(string grade) //converts string to a number representing their grade in college
 {
   if(grade=="Freshman")
   {
@@ -274,4 +274,3 @@ string getGradeNum(string grade)
     return "-1";
   }
 }
-
