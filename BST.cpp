@@ -121,7 +121,6 @@ void PlayerTree::printPlayerStat(string name)
       cout << "==================" << endl;
       cout << "Name:" << root->name << endl;
       cout << "Position: " << root->position << endl;
-      cout << "Grade: " << root->grade << endl;
       cout << "College: " << root->college << endl;
       cout << "Points Per Game: " << root->ppg << endl;
       cout << "Field Goal Percentage: " << root->fgp << endl;

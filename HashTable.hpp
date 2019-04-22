@@ -1,6 +1,7 @@
 #ifndef HASH_HPP
 #define HASH_HPP
 #include "playerStruct.h"
+#include "MaxHeap.hpp"
 
 using namespace std;
 
@@ -14,6 +15,11 @@ class HashTable
 {
     // No. of buckets (Size of the Hash Table)
     int tableSize;
+    double avgPPG;
+    double avgPGR;
+    double avgSPG;
+    double avgBPG;
+    double avg3pt;
 
     // Pointer to an array containing buckets (the Hash Table)
     player **hashTable;
@@ -54,7 +60,7 @@ class HashTable
   	Purpose: function to hash "key" into an index
     return: index in the Hash Table
   	*/
-    unsigned int hashFunction(int key);
+    unsigned int hashFunction(player* p);
 
     /*
   	Method Name: printTable
@@ -68,7 +74,9 @@ class HashTable
   	Purpose: function to search for "key" in the Hash Table
     return: node with "key" as it's data if found, otherwise NULL
   	*/
-    player* searchItem(int aggregateScore);
+    player* searchItem(player* p);
+
+    void buildTable(MaxHeap &h);
 };
 
 #endif

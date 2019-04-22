@@ -3,6 +3,7 @@
 #include <sstream>
 #include "MaxHeap.hpp"
 #include "BST.hpp"
+#include "HashTable.hpp"
 // #include "playerStruct.h"
 // #include "MaxHeap.hpp"
 //#include "MaxHeap.cpp"
@@ -21,8 +22,8 @@ void printInstructions(){
 	cout << "selecting players. The user will be prompted initially" << endl;
 	cout << "with three options: "<< endl;
 	cout << "1) auto pick the best available player" << endl;
-	cout << "2) search for player by name to draft or view stats" << endl;
-	cout << "3) select a player based on team needs." << endl;
+	cout << "2) select a player based on team needs." << endl;
+	cout << "3) search for player by name to draft or view stats" << endl;
 	cout << "The user will be prompted with team needs, and as more" << endl;
 	cout << "needs are entered, D'ANGELO will give the user the best" << endl;
 	cout << "available player based on these team needs." << endl;
@@ -105,6 +106,8 @@ int displayDraftMenu(MaxHeap &h, PlayerTree &t){ //ADD BST PARAM
 	int userInput;
 
 	while (openMenu){
+		h.resetAverages();
+
 		cout << "--------------------------------------" << endl;
 		cout << "1. Auto Draft Best Available" << endl;
 		cout << "2. Enter Team Needs" << endl;
@@ -113,8 +116,9 @@ int displayDraftMenu(MaxHeap &h, PlayerTree &t){ //ADD BST PARAM
 		cout << "--------------------------------------" << endl;
 
 		//getline(cin, userInput);
-    cin >> userInput;
+    	cin >> userInput;
 		player* curr;
+		int needCount = 0;
 
 		switch(userInput){
 			case 1:
@@ -130,6 +134,16 @@ int displayDraftMenu(MaxHeap &h, PlayerTree &t){ //ADD BST PARAM
 
 			case 2:
 			{
+				// HashTable ht(5);
+				// ht.calcAvgs(h);
+				h.calcAvgPPG();
+			  	h.calcAvgPGR();
+			  	h.calcAvgSPG();
+			  	h.calcAvgBPG();
+			  	h.calcAvg3ptp();
+
+			  	HashTable ht(6);
+
 				int choice;
 
 				bool scoring = false;
@@ -139,44 +153,48 @@ int displayDraftMenu(MaxHeap &h, PlayerTree &t){ //ADD BST PARAM
 				bool shooting = false;
 
 				bool menu = false;
-				while (!menu){
-					cout << "Enter ALL desired team needs before hitting finish." << endl;
-					cout << "1. Scoring" << endl;
-					cout << "2. Playmaking" << endl;
-					cout << "3. Perimeter Defense" << endl;
-					cout << "4. Interior Defense" << endl;
-					cout << "5. Shooting" << endl;
-					cout << "6. Finished" << endl;
+				// while (!menu){
+				// 	cout << "Enter ALL desired team needs before hitting finish." << endl;
+				// 	cout << "1. Scoring" << endl;
+				// 	cout << "2. Playmaking" << endl;
+				// 	cout << "3. Perimeter Defense" << endl;
+				// 	cout << "4. Interior Defense" << endl;
+				// 	cout << "5. Shooting" << endl;
+				// 	cout << "6. Finished" << endl;
 
-					cin >> choice;
-					switch(choice){
-						case 1:
-							cout << "Scoring added." << endl;
-						break;
+				// 	cin >> choice;
+				// 	switch(choice){
+				// 		case 1:
+				// 			cout << "Scoring added." << endl;
+				// 			needCount++;
+				// 		break;
 
-						case 2:
-							cout << "Playmaking added." << endl;
+				// 		case 2:
+				// 			cout << "Playmaking added." << endl;
+				// 			needCount++;
+				// 		break;
 
-						break;
+				// 		case 3:
+				// 			cout << "Perimeter Defense added." << endl;
+				// 			needCount++;
+				// 		break;
 
-						case 3:
-							cout << "Perimeter Defense added." << endl;
-						break;
+				// 		case 4:
+				// 			cout << "Interior Defense added." << endl;
+				// 			needCount++;
+				// 		break;
 
-						case 4:
-							cout << "Interior Defense added." << endl;
-						break;
+				// 		case 5:
+				// 			cout << "Shooting added." << endl;
+				// 			needCount++;
+				// 		break;
 
-						case 5:
-							cout << "Shooting added." << endl;
-						break;
-
-						case 6: 
-							menu = true;
-						break;
-					}
-				}
-				//print recommended prospects
+				// 		case 6: 
+				// 			menu = true;
+				// 		break;
+				// 	}
+				// }
+				// //print recommended prospects
 			}
 			break;
 
@@ -237,15 +255,20 @@ int displayDraftMenu(MaxHeap &h, PlayerTree &t){ //ADD BST PARAM
 
 		cout << endl;
 		cout << "---------------------------------------" << endl;
-		cout << "Top 10 Available Prospects: " << endl;
+		cout << "Top Available Prospects: " << endl;
 
 		for (int i = 0; i < 10; i++){
-			cout << i+1 << ". ";
 			player* curr = h.extractMax();
-			temp.push_back(curr);
-			cout << curr->name << ", " << curr->position
-			<< ", " << curr->college << ", " << curr->ppg << " ppg, "
-			<< curr->rpg << " rpg, " << curr->apg << " astpg" << endl;
+			if (curr != NULL){
+				cout << i+1 << ". ";
+				temp.push_back(curr);
+				cout << curr->name << ", " << curr->position
+				<< ", " << curr->college << ", " << curr->ppg << " ppg, "
+				<< curr->rpg << " rpg, " << curr->apg << " astpg" << endl;
+			}
+			else if (curr == NULL){
+				break;
+			}
 		}
 
 		cout << "---------------------------------------" << endl;

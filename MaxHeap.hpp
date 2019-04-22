@@ -23,12 +23,20 @@ public:
 	int leftChild(int index);
 	int rightChild(int index);
 	void maxHeapify(int index);
+	int getCurrentSize();
 	player* extractMax();
-  player* createPlayer(string s[], double d[]);
+  	player* createPlayer(string s[], double d[]);
 	void insertPlayer(player* p);
 	void print();
 	void draftPlayer(string name);
   	int draftPlayerHelper(string name);
+  	double calcAvgPPG();
+  	double calcAvgPGR();
+  	double calcAvgSPG();
+  	double calcAvgBPG();
+  	double calcAvg3ptp();
+  	void resetAverages();
+
 };
 
 #endif

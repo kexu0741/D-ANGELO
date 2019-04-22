@@ -44,6 +44,10 @@ int MaxHeap::rightChild(int index)
   return ((2*index) + 2);
 }
 
+int MaxHeap::getCurrentSize(){
+	return currentSize;
+}
+
 player* MaxHeap::createPlayer(string s[], double d[]){ //params: arrays passed in from main, read from file
 	player* newPlayer = new player;
 	newPlayer->name = s[0];
@@ -160,10 +164,12 @@ void MaxHeap::insertPlayer(player* p){
 
 player* MaxHeap::extractMax(){
 	if (currentSize <= 0){
-		cout << "ERROR: EMPTY" << endl;
+		//cout << "ERROR: EMPTY" << endl;
+		return NULL;
 	}
 
 	else if (currentSize == 1){
+		currentSize = 0;
 		return heapArr[0];
 	}
 	else{
@@ -209,6 +215,7 @@ void MaxHeap::maxHeapify(int index){
 	}
 
 }
+
 int MaxHeap::draftPlayerHelper(string name)
 {
 	for(int i=0; i<capacity; i++)
@@ -219,6 +226,7 @@ int MaxHeap::draftPlayerHelper(string name)
 		}
 	}
 }
+
 void MaxHeap::draftPlayer(string name)
 {
 	int spot = draftPlayerHelper(name);
@@ -226,3 +234,128 @@ void MaxHeap::draftPlayer(string name)
 	currentSize--;
 	maxHeapify(spot);
 }
+
+void MaxHeap::resetAverages(){
+	for (int i = 0; i < currentSize; i++){
+		heapArr[i]->aboveAverageCount = 0;
+	}
+}
+
+double MaxHeap::calcAvgPPG(){
+	if (currentSize != 0){
+		double sum = 0;
+		for (int i = 0; i < currentSize; i++){
+			sum += heapArr[i]->ppg;
+		}
+
+		double avg = (double)(sum/currentSize);
+
+		//updating if players are above average in this stat
+		for (int i = 0; i < currentSize; i++){
+			if (heapArr[i]->ppg >= avg){
+				heapArr[i]->aboveAverageCount++;
+			}
+		}
+
+		return avg;
+	}
+
+	else{
+		return 0;
+	}
+}
+
+double MaxHeap::calcAvgPGR(){
+	if (currentSize != 0){
+		double sum = 0;
+		for (int i = 0; i < currentSize; i++){
+			double PGR = heapArr[i]->apg * heapArr[i]->astto;
+			sum += PGR;
+		}
+
+		double avg = (double)(sum/currentSize);
+
+		for (int i = 0; i < currentSize; i++){
+			double PGR = heapArr[i]->apg * heapArr[i]->astto;
+			if (PGR >= avg){
+				heapArr[i]->aboveAverageCount++;
+			}
+		}
+
+		return avg;
+	}
+
+	else{
+		return 0;
+	}
+}	
+
+double MaxHeap::calcAvgSPG(){
+	if (currentSize != 0){
+		double sum = 0;
+		for (int i = 0; i < currentSize; i++){
+			sum += heapArr[i]->spg;
+		}
+
+		double avg = (double)(sum/currentSize);
+
+		for (int i = 0; i < currentSize; i++){
+			if (heapArr[i]->spg >= avg){
+				heapArr[i]->aboveAverageCount++;
+			}
+		}
+
+		return avg;
+	}
+
+	else{
+		return 0;
+	}
+}
+
+double MaxHeap::calcAvgBPG(){
+	if (currentSize != 0){
+		double sum = 0;
+		for (int i = 0; i < currentSize; i++){
+			sum += heapArr[i]->bpg;
+		}
+
+		double avg = (double)(sum/currentSize);
+
+		for (int i = 0; i < currentSize; i++){
+			if (heapArr[i]->bpg >= avg){
+				heapArr[i]->aboveAverageCount++;
+			}
+		}
+
+		return avg;
+	}
+
+	else{
+		return 0;
+	}
+}
+
+double MaxHeap::calcAvg3ptp(){
+	if (currentSize != 0){
+		double sum = 0;
+		for (int i = 0; i < currentSize; i++){
+			sum += heapArr[i]->threeptp;
+		}
+
+		double avg = (double)(sum/currentSize);
+
+		for (int i = 0; i < currentSize; i++){
+			if (heapArr[i]->threeptp >= avg){
+				heapArr[i]->aboveAverageCount++;
+			}
+		}
+
+		return avg;
+	}
+	else{
+		return 0;
+	}
+}
+
+

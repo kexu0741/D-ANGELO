@@ -2,6 +2,7 @@
 #include <fstream>
 #include <string>
 #include <sstream>
+#include <vector>
 #include "HashTable.hpp"
 #include "playerStruct.h"
 
@@ -22,6 +23,7 @@ HashTable::HashTable(int bsize)
     for(int i=0;i<bsize;i++)
         hashTable[i] = nullptr;
 }
+
 HashTable::~HashTable()
 {
   for(int i = 0; i<tableSize; i++)
@@ -37,21 +39,21 @@ HashTable::~HashTable()
   delete hashTable;
 }
 // //function to calculate hash function
-unsigned int HashTable::hashFunction(int data)
+unsigned int HashTable::hashFunction(player* p)
 {
-    return (data % tableSize);
+    return p->aboveAverageCount;
 }
 //
 // // TODO Complete this function
 // //function to search
-player* HashTable::searchItem(int aggregateScore)
+player* HashTable::searchItem(player* p)
 {
     //Compute the index by using the hash function
-    int index = hashFunction(aggregateScore);
+    int index = hashFunction(p);
     player *temp = hashTable[index];
     while(temp!=NULL)
     {
-      if(temp->aggregateScore==aggregateScore)
+      if(temp==p)
       {
         return temp;
       }
@@ -64,15 +66,13 @@ player* HashTable::searchItem(int aggregateScore)
 
 bool HashTable::insertItem(player* n)
 {
-    if(!searchItem(n->aggregateScore))
+    if(!searchItem(n))
     {
         // TODO :
         // Use the hash function on the data to get the index/slot,
         // create a new node with the data and insert it in this slot's list
-        //player* n = new player(name, p , g, c, p1, f, t, f2, a, r, s, b, t2, a2, s2, b2, s3, s4, p2, g2, a3);
-        // n->data = data;
-        // n->next = NULL;
-        int index = hashFunction(n->aggregateScore);
+
+        int index = hashFunction(n);
         if(hashTable[index]==NULL)
         {
           hashTable[index] = n;
@@ -106,21 +106,9 @@ void HashTable::printTable()
         cout << endl;
         //TODO
     }
+}
 
- }
 
-// int main()
-// {
-//   HashTable h(7);
-//   h.insertItem("A", "point guard", 9, "Duke", 1,2,3,4,5,6,7,8,9,0,11,12,13,14,15,16,17);
-//   h.insertItem("V", "point guard", 9, "Duke", 1,2,3,4,5,6,7,8,9,0,11,12,13,14,15,16,2);
-//   h.insertItem("T", "point guard", 9, "Duke", 1,2,3,4,5,6,7,8,9,0,11,12,13,14,15,16,7);
-//   h.insertItem("E", "point guard", 9, "Duke", 1,2,3,4,5,6,7,8,9,0,11,12,13,14,15,16,47);
-//   h.insertItem("Y", "point guard", 9, "Duke", 1,2,3,4,5,6,7,8,9,0,11,12,13,14,15,16,27);
-//   h.insertItem("B", "point guard", 9, "Duke", 1,2,3,4,5,6,7,8,9,0,11,12,13,14,15,16,18);
-//   h.insertItem("C", "point guard", 9, "Duke", 1,2,3,4,5,6,7,8,9,0,11,12,13,14,15,16,13);
-//   h.insertItem("Q", "point guard", 9, "Duke", 1,2,3,4,5,6,7,8,9,0,11,12,13,14,15,16,15);
-//   h.insertItem("M", "point guard", 9, "Duke", 1,2,3,4,5,6,7,8,9,0,11,12,13,14,15,16,11);
-
-//   h.printTable();
-// }
+void HashTable::buildTable(MaxHeap &h){
+	
+}
