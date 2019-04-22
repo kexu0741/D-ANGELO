@@ -74,7 +74,7 @@ void displayStartingMenu(){
 	}
 }
 
-int displayDraftMenu(MaxHeap &h, PlayerTree &t, HashTable ht){ 
+int displayDraftMenu(MaxHeap &h, PlayerTree &t, HashTable ht){
 	vector<player*> temp; //temp vector for printing
 
 	for (int i = 0; i < 15; i++)
@@ -114,11 +114,10 @@ int displayDraftMenu(MaxHeap &h, PlayerTree &t, HashTable ht){
 		if (pickCount == 60){ //ends the draft after 60 picks
 			break;
 		}
- 		
+
  		bool pickOver = false;
 
  		while (!pickOver){
- 			//ht.printTable();
 
  			cout << endl;
  			cout << "----------------PICK #" << pickCount + 1 << "--------------------"<< endl;
@@ -128,10 +127,7 @@ int displayDraftMenu(MaxHeap &h, PlayerTree &t, HashTable ht){
 			cout << "3. Search for Desired Player" << endl;
 			cout << "4. Quit draft" << endl;
 			cout << "--------------------------------------" << endl;
-
-			//getline(cin, userInput);
-	    	cin >> userInput;
-			//player* curr;
+    	cin >> userInput;
 
 			switch(userInput){
 				case 1: //auto drafts best available player
@@ -147,11 +143,11 @@ int displayDraftMenu(MaxHeap &h, PlayerTree &t, HashTable ht){
 					ht.deletePlayer(name);
 
 					pickOver = true;
-				}	
+				}
 				break;
 
 				case 2:
-				{	
+				{
 					int choice;
 					//bools to ensure duplicate team needs are not entered
 					bool recsEntered = false;
@@ -160,8 +156,6 @@ int displayDraftMenu(MaxHeap &h, PlayerTree &t, HashTable ht){
 					bool perimDMarked = false;
 					bool inDMarked = false;
 					bool shootingMarked = false;
-
-					//MaxHeap recs(50);
 
 					bool menu = false;
 					while (!menu){
@@ -180,11 +174,10 @@ int displayDraftMenu(MaxHeap &h, PlayerTree &t, HashTable ht){
 									cout << "Scoring added." << endl;
 									vector<player*> scorers = ht.getNthBucket(1); //scorers bucket is passed
 									for (int i = 0; i < scorers.size(); i++){
-										//recs.insertPlayer(scorers[i]);
 									player* current = scorers[i];
 
 									//copies node to ensure completely new pointer is made (in case heap is modified)
-									player* newPlayer = new player(current->name, current->position, current->grade, current->college, 
+									player* newPlayer = new player(current->name, current->position, current->grade, current->college,
 									current->ppg, current->fgp, current->threeptp, current->ftp, current->apg, current->rpg, current->spg, current->bpg,
 									current->tovpg, current->astto, current->stlto, current->blkto, current->sceff, current->sheff, current->pfpg, current->gamesPlayed);
 									newPlayer->aggregateScore = current->aggregateScore;
@@ -195,7 +188,6 @@ int displayDraftMenu(MaxHeap &h, PlayerTree &t, HashTable ht){
 									scoringMarked = true;
 									recsEntered = true;
 
-									//ht.printTable();
 								}
 								else{
 									cout << "Scoring already added. " << endl;
@@ -207,10 +199,9 @@ int displayDraftMenu(MaxHeap &h, PlayerTree &t, HashTable ht){
 								if (!playMakingMarked){
 									vector<player*> playmakers = ht.getNthBucket(2); //playmakers bucket is passed
 									for (int i = 0; i < playmakers.size(); i++){
-										//recs.insertPlayer(playmakers[i]);
 										player* current = playmakers[i];
 
-										player* newPlayer = new player(current->name, current->position, current->grade, current->college, 
+										player* newPlayer = new player(current->name, current->position, current->grade, current->college,
 										current->ppg, current->fgp, current->threeptp, current->ftp, current->apg, current->rpg, current->spg, current->bpg,
 										current->tovpg, current->astto, current->stlto, current->blkto, current->sceff, current->sheff, current->pfpg, current->gamesPlayed);
 
@@ -221,7 +212,6 @@ int displayDraftMenu(MaxHeap &h, PlayerTree &t, HashTable ht){
 									playMakingMarked = true;
 									recsEntered = true;
 
-									//ht.printTable();
 								}
 								else{
 									cout << "Playmaking already added" << endl;
@@ -233,10 +223,9 @@ int displayDraftMenu(MaxHeap &h, PlayerTree &t, HashTable ht){
 								if (!perimDMarked){
 									vector<player*> pDefenders = ht.getNthBucket(3); //perimiter defenders bucket is passed
 									for (int i = 0; i < pDefenders.size(); i++){
-										//recs.insertPlayer(pDefenders[i]);
 										player* current = pDefenders[i];
 
-										player* newPlayer = new player(current->name, current->position, current->grade, current->college, 
+										player* newPlayer = new player(current->name, current->position, current->grade, current->college,
 										current->ppg, current->fgp, current->threeptp, current->ftp, current->apg, current->rpg, current->spg, current->bpg,
 										current->tovpg, current->astto, current->stlto, current->blkto, current->sceff, current->sheff, current->pfpg, current->gamesPlayed);
 
@@ -247,7 +236,6 @@ int displayDraftMenu(MaxHeap &h, PlayerTree &t, HashTable ht){
 									cout << "Perimeter Defense added." << endl;
 									perimDMarked = true;
 									recsEntered = true;
-									//ht.printTable();
 								}
 								else{
 									cout << "Perimeter Defense already added." << endl;
@@ -259,10 +247,9 @@ int displayDraftMenu(MaxHeap &h, PlayerTree &t, HashTable ht){
 								if (!inDMarked){
 									vector<player*> inDefenders = ht.getNthBucket(4); //interior defenders bucket is passed
 									for (int i = 0; i < inDefenders.size(); i++){
-										//recs.insertPlayer(inDefenders[i]);
 										player* current = inDefenders[i];
 
-										player* newPlayer = new player(current->name, current->position, current->grade, current->college, 
+										player* newPlayer = new player(current->name, current->position, current->grade, current->college,
 										current->ppg, current->fgp, current->threeptp, current->ftp, current->apg, current->rpg, current->spg, current->bpg,
 										current->tovpg, current->astto, current->stlto, current->blkto, current->sceff, current->sheff, current->pfpg, current->gamesPlayed);
 
@@ -273,7 +260,6 @@ int displayDraftMenu(MaxHeap &h, PlayerTree &t, HashTable ht){
 									cout << "Interior Defense added." << endl;
 									inDMarked = true;
 									recsEntered = true;
-									//ht.printTable();
 								}
 								else{
 									cout << "Interior Defense already added." << endl;
@@ -284,10 +270,9 @@ int displayDraftMenu(MaxHeap &h, PlayerTree &t, HashTable ht){
 								if (!shootingMarked){
 									vector<player*> shooters = ht.getNthBucket(5); //shooters bucket is passed
 									for (int i = 0; i < shooters.size(); i++){
-										//recs.insertPlayer(shooters[i]);
 										player* current = shooters[i];
 
-										player* newPlayer = new player(current->name, current->position, current->grade, current->college, 
+										player* newPlayer = new player(current->name, current->position, current->grade, current->college,
 										current->ppg, current->fgp, current->threeptp, current->ftp, current->apg, current->rpg, current->spg, current->bpg,
 										current->tovpg, current->astto, current->stlto, current->blkto, current->sceff, current->sheff, current->pfpg, current->gamesPlayed);
 
@@ -298,14 +283,13 @@ int displayDraftMenu(MaxHeap &h, PlayerTree &t, HashTable ht){
 									cout << "Shooting added." << endl;
 									shootingMarked = true;
 									recsEntered = true;
-									//ht.printTable();
 								}
 								else{
 									cout << "Shooting already added." << endl;
 								}
 							break;
 
-							case 6: 
+							case 6:
 								menu = true;
 							break;
 						}
@@ -388,7 +372,7 @@ int displayDraftMenu(MaxHeap &h, PlayerTree &t, HashTable ht){
 			        {
 			          cout <<  n << " Not Found" << endl;
 			        }
-						
+
 					break;
 			      }
 
@@ -399,9 +383,8 @@ int displayDraftMenu(MaxHeap &h, PlayerTree &t, HashTable ht){
 				break;
 
 
-				//ht.printTable();
 			}
-		}	
+		}
 		cout << endl;
 		cout << "---------------------------------------" << endl;
 		cout << "Top Available Prospects: " << endl;
@@ -455,7 +438,7 @@ int main(){
 
 	HashTable playerMap(6); //team need hash table
 
-	PlayerTree(); //main BST 
+	PlayerTree(); //main BST
 	PlayerTree tree;
 
 	vector<string> components; //temp vector for reading in strings from file
@@ -467,7 +450,7 @@ int main(){
 	while (getline(in, line)){ //reading in every line
 		stringstream ss(line);
 		while (getline(ss, token, delim)){ //pushes every word that's not a comma
-			components.push_back(token); 
+			components.push_back(token);
 		}
 		for (int i = 0; i < components.size(); i++){
 			if (i == 0 || i == 1 || i == 2 || i == 3 || i == 19){ //parses string components in file into string array
@@ -503,7 +486,7 @@ int main(){
 		builder.push_back(curr);
 
 		//copies node so that separate pointers are created
-		player* newPlayer = new player(curr->name, curr->position, curr->grade, curr->college, 
+		player* newPlayer = new player(curr->name, curr->position, curr->grade, curr->college,
 		curr->ppg, curr->fgp, curr->threeptp, curr->ftp, curr->apg, curr->rpg, curr->spg, curr->bpg,
 		curr->tovpg, curr->astto, curr->stlto, curr->blkto, curr->sceff, curr->sheff, curr->pfpg, curr->gamesPlayed);
 
@@ -517,7 +500,6 @@ int main(){
 		best.insertPlayer(builder[i]); //reinserts nodes into heap
 	}
 
-	//playerMap.printTable();
 	int choice = displayDraftMenu(best, tree, playerMap); //starts the draft
 
 	return 0;
