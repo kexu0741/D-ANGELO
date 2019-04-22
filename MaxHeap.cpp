@@ -4,6 +4,7 @@
 
 using namespace std;
 
+//helper swap function for maintaining heap characteristics
 void MaxHeap::swap(player* a, player* b){
 	player temp = *a;
 	*a = *b;
@@ -16,7 +17,8 @@ MaxHeap::MaxHeap(int cap){
 	heapArr = new player*[capacity];
 }
 
-MaxHeap::~MaxHeap(){
+//destructor for heap once it goes out of scope
+MaxHeap::~MaxHeap(){ 
 	delete[] heapArr;
 }
 
@@ -50,9 +52,10 @@ int MaxHeap::getCurrentSize(){
 
 player* MaxHeap::createPlayer(string s[], double d[]){ //params: arrays passed in from main, read from file
 	player* newPlayer = new player;
+	//struct data is filled in by arrays, filled by reading the file
 	newPlayer->name = s[0];
 	newPlayer->position = s[1];
-	if (s[2] == "Freshman" || s[2] == "International" || s[2] == "N/A"){
+	if (s[2] == "Freshman" || s[2] == "International" || s[2] == "N/A"){ //handling grade, string->int value
 		newPlayer->grade = 1;
 	}
 	else if(s[2] == "Sophomore"){
@@ -83,10 +86,11 @@ player* MaxHeap::createPlayer(string s[], double d[]){ //params: arrays passed i
 	newPlayer->sheff = d[13]; //shooting efficiency
 	newPlayer->pfpg = d[14];
 
-	double ageMultiplier = 1;
-	double scoringMultiplier = 85.910;
+	double ageMultiplier = 1; //variable to factor untapped potential
+	double scoringMultiplier = 85.910; //changes based on age
 
-	if (newPlayer->grade == 1){
+	//younger = more potential, more weighted scoring
+	if (newPlayer->grade == 1){ 
 		ageMultiplier = 10.0;
 		if (newPlayer->ppg > 20.0){
 			scoringMultiplier = 105.910;
@@ -130,9 +134,9 @@ player* MaxHeap::createPlayer(string s[], double d[]){ //params: arrays passed i
 
 	- (newPlayer->tovpg * 33.897 )) * (ageMultiplier);
 
-	newPlayer->aggregateScore = PER;
-
-	insertPlayer(newPlayer);
+	newPlayer->aggregateScore = PER; //assigns aggregate score to player
+  
+	insertPlayer(newPlayer); //inserts player into heap
 
 }    //call insertPlayer() in this
 
@@ -147,6 +151,7 @@ void MaxHeap::insertPlayer(player* p){
 	int index = currentSize - 1;
 	heapArr[index] = p;
 
+	//repairing upwards
 	while (index != 0 && heapArr[parent(index)]->aggregateScore <= heapArr[index]->aggregateScore)
 	{
 		//swap(&heapArr[index], &heapArr[parent(index)]);
@@ -162,7 +167,7 @@ void MaxHeap::insertPlayer(player* p){
 	}
 }
 
-player* MaxHeap::extractMax(){
+player* MaxHeap::extractMax(){ //removes and returns node at the top
 	if (currentSize <= 0){
 		//cout << "ERROR: EMPTY" << endl;
 		return NULL;
@@ -176,13 +181,13 @@ player* MaxHeap::extractMax(){
 		player* max = heapArr[0];
 		heapArr[0] = heapArr[currentSize - 1];
 		currentSize--;
-		maxHeapify(0);
+		maxHeapify(0); //call heapify to maintain heap characteristics
 
 		return max;
 	}
 }
 
-void MaxHeap::maxHeapify(int index){
+void MaxHeap::maxHeapify(int index){ //maintains heap characteristics after node is removed
 	int l = leftChild(index);
 	int r = rightChild(index);
 	int largest = index;
@@ -216,7 +221,7 @@ void MaxHeap::maxHeapify(int index){
 
 }
 
-int MaxHeap::draftPlayerHelper(string name)
+int MaxHeap::draftPlayerHelper(string name) //helper function for node deletion
 {
 	for(int i=0; i<capacity; i++)
 	{
@@ -227,21 +232,21 @@ int MaxHeap::draftPlayerHelper(string name)
 	}
 }
 
-void MaxHeap::draftPlayer(string name)
+void MaxHeap::draftPlayer(string name) //essentially node deletion
 {
 	int spot = draftPlayerHelper(name);
 	heapArr[spot] = heapArr[currentSize-1];
 	currentSize--;
-	maxHeapify(spot);
+	maxHeapify(spot); //maintains heap charcteristics
 }
 
-void MaxHeap::resetAverages(){
+void MaxHeap::resetAverages(){ //function for future feature; ran out of time to implement
 	for (int i = 0; i < currentSize; i++){
-		heapArr[i]->aboveAverageCount = 0;
+		heapArr[i]->aboveAverageCount = 0; 
 	}
 }
 
-double MaxHeap::calcAvgPPG(){
+double MaxHeap::calcAvgPPG(){ //calculates the average ppg value over entire heap
 	if (currentSize != 0){
 		double sum = 0;
 		for (int i = 0; i < currentSize; i++){
@@ -265,32 +270,32 @@ double MaxHeap::calcAvgPPG(){
 	}
 }
 
-double MaxHeap::calcAvgPGR(){
+double MaxHeap::calcAvgPGR(){ //calculates average PGR (point guard rating) value over entire heap
 	if (currentSize != 0){
 		double sum = 0;
-		for (int i = 0; i < currentSize; i++){
+		for (int i = 0; i < currentSize; i++){ //calculating PGR for each node
 			double PGR = heapArr[i]->apg * heapArr[i]->astto;
 			sum += PGR;
 		}
 
 		double avg = (double)(sum/currentSize);
 
-		for (int i = 0; i < currentSize; i++){
+		for (int i = 0; i < currentSize; i++){ //for future feature
 			double PGR = heapArr[i]->apg * heapArr[i]->astto;
 			if (PGR >= avg){
-				heapArr[i]->aboveAverageCount++;
+				heapArr[i]->aboveAverageCount++; 
 			}
 		}
 
 		return avg;
 	}
 
-	else{
+	else{ //if heap is empty...
 		return 0;
 	}
 }	
 
-double MaxHeap::calcAvgSPG(){
+double MaxHeap::calcAvgSPG(){ //calculates average spg for entire heap
 	if (currentSize != 0){
 		double sum = 0;
 		for (int i = 0; i < currentSize; i++){
@@ -313,7 +318,7 @@ double MaxHeap::calcAvgSPG(){
 	}
 }
 
-double MaxHeap::calcAvgBPG(){
+double MaxHeap::calcAvgBPG(){ //calculates average blocks per game for entire heap
 	if (currentSize != 0){
 		double sum = 0;
 		for (int i = 0; i < currentSize; i++){
@@ -336,7 +341,7 @@ double MaxHeap::calcAvgBPG(){
 	}
 }
 
-double MaxHeap::calcAvg3ptp(){
+double MaxHeap::calcAvg3ptp(){ //calculates average 3pt percentage for entire heap
 	if (currentSize != 0){
 		double sum = 0;
 		for (int i = 0; i < currentSize; i++){

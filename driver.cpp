@@ -54,13 +54,13 @@ void displayStartingMenu(){
 	string startInput;
 	string prompt;
 
-	while (!start){
+	while (!start){ //displays starting options
 		cout << "1. Instructions" << endl;
 		cout << "2. Enter D'ANGELO" << endl;
 
 		getline(cin, startInput);
 
-		if (startInput == "1" || startInput == "2"){
+		if (startInput == "1" || startInput == "2"){ //user input handling
 			if (startInput == "1"){
 				printInstructions();
 			}
@@ -74,7 +74,7 @@ void displayStartingMenu(){
 	}
 }
 
-int displayDraftMenu(MaxHeap &h, PlayerTree &t, HashTable ht){ //ADD BST PARAM
+int displayDraftMenu(MaxHeap &h, PlayerTree &t, HashTable ht){ 
 	vector<player*> temp; //temp vector for printing
 
 	for (int i = 0; i < 15; i++)
@@ -86,7 +86,7 @@ int displayDraftMenu(MaxHeap &h, PlayerTree &t, HashTable ht){ //ADD BST PARAM
 	for (int i = 0; i < 10; i++){
 		cout << i+1 << ". ";
 		player* curr = h.extractMax();
-		temp.push_back(curr);
+		temp.push_back(curr); //makes sure nodes are kept
 		cout << curr->name << ", " << curr->position
 		<< ", " << curr->college << ", " << curr->ppg << " ppg, "
 		<< curr->rpg << " rpg, " << curr->apg << " astpg" << endl;
@@ -95,7 +95,7 @@ int displayDraftMenu(MaxHeap &h, PlayerTree &t, HashTable ht){ //ADD BST PARAM
 	cout << "---------------------------------------" << endl;
 
 	for (int i = 0; i < temp.size(); i++){
-		h.insertPlayer(temp[i]);
+		h.insertPlayer(temp[i]); //nodes put back into the heap
 	}
 
 	temp.clear();
@@ -109,9 +109,9 @@ int displayDraftMenu(MaxHeap &h, PlayerTree &t, HashTable ht){ //ADD BST PARAM
 	int pickCount = 0;
 
 	while (openMenu){
-		MaxHeap recs(50);
+		MaxHeap recs(50); //heap for reccomendations
 
-		if (pickCount == 60){
+		if (pickCount == 60){ //ends the draft after 60 picks
 			break;
 		}
  		
@@ -134,9 +134,9 @@ int displayDraftMenu(MaxHeap &h, PlayerTree &t, HashTable ht){ //ADD BST PARAM
 			//player* curr;
 
 			switch(userInput){
-				case 1:
+				case 1: //auto drafts best available player
 				{
-					//delete from heap and the tree
+					//deletes player from all three data structures
 					player* curr = h.extractMax();
 					string name = curr->name;
 					t.deletePlayer(curr->name);
@@ -153,6 +153,7 @@ int displayDraftMenu(MaxHeap &h, PlayerTree &t, HashTable ht){ //ADD BST PARAM
 				case 2:
 				{	
 					int choice;
+					//bools to ensure duplicate team needs are not entered
 					bool recsEntered = false;
 					bool scoringMarked = false;
 					bool playMakingMarked = false;
@@ -177,17 +178,18 @@ int displayDraftMenu(MaxHeap &h, PlayerTree &t, HashTable ht){ //ADD BST PARAM
 							case 1:
 								if (!scoringMarked){
 									cout << "Scoring added." << endl;
-									vector<player*> scorers = ht.getNthBucket(1);
+									vector<player*> scorers = ht.getNthBucket(1); //scorers bucket is passed
 									for (int i = 0; i < scorers.size(); i++){
 										//recs.insertPlayer(scorers[i]);
 									player* current = scorers[i];
 
+									//copies node to ensure completely new pointer is made (in case heap is modified)
 									player* newPlayer = new player(current->name, current->position, current->grade, current->college, 
 									current->ppg, current->fgp, current->threeptp, current->ftp, current->apg, current->rpg, current->spg, current->bpg,
 									current->tovpg, current->astto, current->stlto, current->blkto, current->sceff, current->sheff, current->pfpg, current->gamesPlayed);
-
 									newPlayer->aggregateScore = current->aggregateScore;
-									recs.insertPlayer(newPlayer);
+
+									recs.insertPlayer(newPlayer); //inserts player into reccomendation heap
 
 									}
 									scoringMarked = true;
@@ -203,7 +205,7 @@ int displayDraftMenu(MaxHeap &h, PlayerTree &t, HashTable ht){ //ADD BST PARAM
 
 							case 2:
 								if (!playMakingMarked){
-									vector<player*> playmakers = ht.getNthBucket(2);
+									vector<player*> playmakers = ht.getNthBucket(2); //playmakers bucket is passed
 									for (int i = 0; i < playmakers.size(); i++){
 										//recs.insertPlayer(playmakers[i]);
 										player* current = playmakers[i];
@@ -229,7 +231,7 @@ int displayDraftMenu(MaxHeap &h, PlayerTree &t, HashTable ht){ //ADD BST PARAM
 
 							case 3:
 								if (!perimDMarked){
-									vector<player*> pDefenders = ht.getNthBucket(3);
+									vector<player*> pDefenders = ht.getNthBucket(3); //perimiter defenders bucket is passed
 									for (int i = 0; i < pDefenders.size(); i++){
 										//recs.insertPlayer(pDefenders[i]);
 										player* current = pDefenders[i];
@@ -255,7 +257,7 @@ int displayDraftMenu(MaxHeap &h, PlayerTree &t, HashTable ht){ //ADD BST PARAM
 
 							case 4:
 								if (!inDMarked){
-									vector<player*> inDefenders = ht.getNthBucket(4);
+									vector<player*> inDefenders = ht.getNthBucket(4); //interior defenders bucket is passed
 									for (int i = 0; i < inDefenders.size(); i++){
 										//recs.insertPlayer(inDefenders[i]);
 										player* current = inDefenders[i];
@@ -280,7 +282,7 @@ int displayDraftMenu(MaxHeap &h, PlayerTree &t, HashTable ht){ //ADD BST PARAM
 
 							case 5:
 								if (!shootingMarked){
-									vector<player*> shooters = ht.getNthBucket(5);
+									vector<player*> shooters = ht.getNthBucket(5); //shooters bucket is passed
 									for (int i = 0; i < shooters.size(); i++){
 										//recs.insertPlayer(shooters[i]);
 										player* current = shooters[i];
@@ -313,7 +315,7 @@ int displayDraftMenu(MaxHeap &h, PlayerTree &t, HashTable ht){ //ADD BST PARAM
 							cout << endl;
 							cout << "Top reccomendations: " << endl;
 
-							vector<player*> temp;
+							vector<player*> temp; //vector for printing
 
 							for (int i = 0; i < 5; i++){
 								player* curr = recs.extractMax();
@@ -330,14 +332,14 @@ int displayDraftMenu(MaxHeap &h, PlayerTree &t, HashTable ht){ //ADD BST PARAM
 							}
 
 							for (int i = 0; i < temp.size(); i++){
-								recs.insertPlayer(temp[i]);
+								recs.insertPlayer(temp[i]); //reinserts popped nodes back into heap
 							}
 					}
 
 				}
 				break;
 
-				case 3:
+				case 3: //searching, calls BST functions
 			    {
 			        string n = "";
 			        cout << "Enter player name: " << endl;
@@ -362,7 +364,7 @@ int displayDraftMenu(MaxHeap &h, PlayerTree &t, HashTable ht){ //ADD BST PARAM
 			                t.printPlayerStat(n);
 			                break;
 			              }
-			              case 2:
+			              case 2: //deletes player from all three data structures
 			              {
 			                cout << curr->name << ", " << curr->position
 			        				<< ", " << curr->college << ", " << curr->ppg << " ppg, "
@@ -443,37 +445,37 @@ int main(){
 	displayStartingMenu();
 
 	ifstream in;
-	in.open("stats.csv");
+	in.open("stats.csv"); //reading in file
 
 	string line;
 	string token;
 	char delim = ',';
 
-	MaxHeap best(100);
+	MaxHeap best(100); //best available heap- main heap
 
-	HashTable playerMap(6);
+	HashTable playerMap(6); //team need hash table
 
-	PlayerTree();
+	PlayerTree(); //main BST 
 	PlayerTree tree;
 
-	vector<string> components;
-	string strComponents[5];
+	vector<string> components; //temp vector for reading in strings from file
+	string strComponents[5]; //array for storing string components read from file
 	int strCnt = 0;
-	double dblComponents[15];
+	double dblComponents[15]; //array for storing double components read from file
 	int dblCnt = 0;
 
-	while (getline(in, line)){
+	while (getline(in, line)){ //reading in every line
 		stringstream ss(line);
-		while (getline(ss, token, delim)){
-			components.push_back(token);
+		while (getline(ss, token, delim)){ //pushes every word that's not a comma
+			components.push_back(token); 
 		}
 		for (int i = 0; i < components.size(); i++){
-			if (i == 0 || i == 1 || i == 2 || i == 3 || i == 19){
+			if (i == 0 || i == 1 || i == 2 || i == 3 || i == 19){ //parses string components in file into string array
 				strComponents[strCnt] = components[i];
 				strCnt++;
 			}
-			else{
-				if (components[i] == "N/A"){
+			else{ //parses double components in file into double array
+				if (components[i] == "N/A"){ //handles if "N/A is read in"
 					dblComponents[dblCnt] = 0;
 				}
 				else{
@@ -483,38 +485,40 @@ int main(){
 			}
 		}
 
-		best.createPlayer(strComponents, dblComponents);
-	    tree.addPlayer(strComponents, dblComponents);
+		best.createPlayer(strComponents, dblComponents); //creates heap nodes from components read in
+	    tree.addPlayer(strComponents, dblComponents); //creates tree nodes from components read in
 
 	    strCnt = 0;
 		dblCnt = 0;
 		components.clear();
 	}
 
-	playerMap.getAverages(best);
+	playerMap.getAverages(best); //initializes averages for heap
 
-	vector<player*> builder;
+	vector<player*> builder; //temp vector for building heap
 
-	player* curr = best.extractMax();
+	player* curr = best.extractMax(); //pops player from top of heap
 
-	while (curr != NULL){
+	while (curr != NULL){ //pops every player from heap
 		builder.push_back(curr);
+
+		//copies node so that separate pointers are created
 		player* newPlayer = new player(curr->name, curr->position, curr->grade, curr->college, 
 		curr->ppg, curr->fgp, curr->threeptp, curr->ftp, curr->apg, curr->rpg, curr->spg, curr->bpg,
 		curr->tovpg, curr->astto, curr->stlto, curr->blkto, curr->sceff, curr->sheff, curr->pfpg, curr->gamesPlayed);
 
 		newPlayer->aggregateScore = curr->aggregateScore;
 
-		playerMap.insertItem(newPlayer);
-		curr = best.extractMax();
+		playerMap.insertItem(newPlayer); //inserts player into heap
+		curr = best.extractMax(); //pops player from top of heap
 	}
 
 	for (int i = 0; i < builder.size(); i++){
-		best.insertPlayer(builder[i]);
+		best.insertPlayer(builder[i]); //reinserts nodes into heap
 	}
 
 	//playerMap.printTable();
-	int choice = displayDraftMenu(best, tree, playerMap);
+	int choice = displayDraftMenu(best, tree, playerMap); //starts the draft
 
 	return 0;
 }

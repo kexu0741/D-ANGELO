@@ -26,7 +26,7 @@ struct player{
 	int gamesPlayed; //games played
 
 	double aggregateScore; //Modified Hollinger PER calculation
-	int aboveAverageCount = 0;
+	int aboveAverageCount = 0; //variable for future feature
 
 	player* left = NULL;
 	player* right = NULL;

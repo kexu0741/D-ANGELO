@@ -8,7 +8,7 @@
 
 using namespace std;
 
-player* HashTable::createNode(string s[], double d[])
+player* HashTable::createNode(string s[], double d[]) //instantiating a node manually
 {
 	int g;
   	if (s[2] == "Freshman" || s[2] == "International" || s[2] == "N/A"){
@@ -51,31 +51,30 @@ HashTable::~HashTable()
   delete hashTable;
 }
 // //function to calculate hash function
+   //players hashed by player type- or stat they're above average in
 unsigned int HashTable::hashFunction(player* p)
 {
 	double PGR = p->apg * p->astto;
-    if (p->position != "PG" && p->ppg >= avgPPG){
+    if (p->position != "PG" && p->ppg >= avgPPG){ //scorers are hashed into index 1
     	return 1;
     }
-    else if (PGR >= avgPGR){
+    else if (PGR >= avgPGR){ //playmakers are hashed into index 2
     	return 2;
     }
-    else if (p->spg >= avgSPG){
+    else if (p->spg >= avgSPG){ //perimeter defenders are hashed into index 3
     	return 3;
     }
-    else if (p->bpg >= avgBPG){
+    else if (p->bpg >= avgBPG){ //interior defenders are hashed into index 4
     	return 4;
     } 
-    else if (p->threeptp >= avg3pt){
+    else if (p->threeptp >= avg3pt){ //shooters are hashed into index 5
     	return 5;
     }
-    else{
+    else{ //rest are hashed into index 0
     	return 0;
     }
 }
-//
-// // TODO Complete this function
-// //function to search
+
 player* HashTable::searchItem(player* p)
 {
     //Compute the index by using the hash function
@@ -92,7 +91,7 @@ player* HashTable::searchItem(player* p)
     return NULL;
 }
 
-bool HashTable::insertItem(player* n)
+bool HashTable::insertItem(player* n) //inserts player into hashtable
 {
     if(!searchItem(n))
     {
@@ -114,10 +113,8 @@ bool HashTable::insertItem(player* n)
     }
 
 }
-//
-// //TODO Complete this function
-// // function to display hash table
-void HashTable::printTable()
+
+void HashTable::printTable() //utility function, iterates through each bucket and prints each node's name
 {
     for (int i = 0; i < tableSize; i++) {
         player *temp = hashTable[i];
@@ -132,7 +129,7 @@ void HashTable::printTable()
     }
 }
 
-void HashTable::deletePlayer(string n){
+void HashTable::deletePlayer(string n){ //searches entire hash table by name, since hash function is by player node iteself
 	for (int i = 0; i < tableSize; i++){
 		player* temp = hashTable[i];
 		player* prev = temp;
@@ -156,7 +153,7 @@ void HashTable::deletePlayer(string n){
 }
 
 
-void HashTable::getAverages(MaxHeap &h){
+void HashTable::getAverages(MaxHeap &h){ //gets averages from heap
 	avgPPG = h.calcAvgPPG();
 	avgPGR = h.calcAvgPGR();
 	avgSPG = h.calcAvgSPG();
@@ -165,7 +162,7 @@ void HashTable::getAverages(MaxHeap &h){
 }
 
 
-vector<player*> HashTable::getNthBucket(int bucket){
+vector<player*> HashTable::getNthBucket(int bucket){ //returns entire bucket, or all players with specialty N
 	vector<player*> ret;
 	player* temp = hashTable[bucket];
 

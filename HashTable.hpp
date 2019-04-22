@@ -81,7 +81,7 @@ class HashTable
 
     void getAverages(MaxHeap &h);
 
-    vector<player*> getNthBucket(int bucket);
+    vector<player*> getNthBucket(int bucket); //returns entire bucket
 
     //void buildTable(MaxHeap h);
 };
