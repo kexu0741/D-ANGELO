@@ -77,6 +77,7 @@ class HashTable
     player* searchItem(player* p);
 
     void deletePlayer(player* p);
+    void deletePlayer(string n);
 
     void getAverages(MaxHeap &h);
 

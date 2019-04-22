@@ -4,24 +4,9 @@
 #include "MaxHeap.hpp"
 #include "BST.hpp"
 #include "HashTable.hpp"
-// #include "playerStruct.h"
-// #include "MaxHeap.hpp"
-//#include "MaxHeap.cpp"
 #include <vector>
 
-//TODO: IMPLEMENT TEAMS, IMPLEMENT MENU, MERGE AVNISH'S CODE
-
 using namespace std;
-
-// void buildTable(vector<player*> &builder, HashTable &ht){
-
-// 	for (int i = 0; i < builder.size(); i++){
-// 		ht.insertItem(builder[i]);
-// 	}
-
-// 	ht.printTable();
-
-// }
 
 void printInstructions(){
 	cout << "-----------------------------------------------------" << endl;
@@ -37,6 +22,8 @@ void printInstructions(){
 	cout << "The user will be prompted with team needs, and as more" << endl;
 	cout << "needs are entered, D'ANGELO will give the user the best" << endl;
 	cout << "available player based on these team needs." << endl;
+	cout << "The user can then search for their desired reccomended player" << endl;
+	cout << "and select them with their pick." << endl;
 	cout << endl;
 	cout << endl;
 	cout << "CALCULATION INFO: " << endl;
@@ -87,7 +74,7 @@ void displayStartingMenu(){
 	}
 }
 
-int displayDraftMenu(MaxHeap &h, PlayerTree &t, HashTable &ht){ //ADD BST PARAM
+int displayDraftMenu(MaxHeap &h, PlayerTree &t, HashTable ht){ //ADD BST PARAM
 	vector<player*> temp; //temp vector for printing
 
 	for (int i = 0; i < 15; i++)
@@ -122,157 +109,297 @@ int displayDraftMenu(MaxHeap &h, PlayerTree &t, HashTable &ht){ //ADD BST PARAM
 	int pickCount = 0;
 
 	while (openMenu){
+		MaxHeap recs(50);
+
 		if (pickCount == 60){
 			break;
 		}
+ 		
+ 		bool pickOver = false;
 
-		cout << "--------------------------------------" << endl;
-		cout << "1. Auto Draft Best Available" << endl;
-		cout << "2. Enter Team Needs" << endl;
-		cout << "3. Search for Player" << endl;
-		cout << "4. Quit draft" << endl;
-		cout << "--------------------------------------" << endl;
+ 		while (!pickOver){
+ 			//ht.printTable();
 
-		//getline(cin, userInput);
-    	cin >> userInput;
-		player* curr;
+ 			cout << endl;
+ 			cout << "----------------PICK #" << pickCount + 1 << "--------------------"<< endl;
+			cout << "--------------------------------------" << endl;
+			cout << "1. Auto Draft Best Available" << endl;
+			cout << "2. Enter Team Needs" << endl;
+			cout << "3. Search for Desired Player" << endl;
+			cout << "4. Quit draft" << endl;
+			cout << "--------------------------------------" << endl;
 
-		switch(userInput){
-			case 1:
-				//delete from heap and the tree
-				curr = h.extractMax();
-				t.deletePlayer(curr->name);
-				cout << curr->name << ", " << curr->position
-				<< ", " << curr->college << ", " << curr->ppg << " ppg, "
-				<< curr->rpg << " rpg, " << curr->apg << " astpg "
-				<< "---- drafted " << pickCount + 1 << " overall." << endl;
-				ht.deletePlayer(curr);
+			//getline(cin, userInput);
+	    	cin >> userInput;
+			//player* curr;
 
-			break;
+			switch(userInput){
+				case 1:
+				{
+					//delete from heap and the tree
+					player* curr = h.extractMax();
+					string name = curr->name;
+					t.deletePlayer(curr->name);
+					cout << curr->name << ", " << curr->position
+					<< ", " << curr->college << ", " << curr->ppg << " ppg, "
+					<< curr->rpg << " rpg, " << curr->apg << " astpg "
+					<< "---- drafted " << pickCount + 1 << " overall." << endl;
+					ht.deletePlayer(name);
 
-			case 2:
-			{	
-				int choice;
-
-				MaxHeap recs(50);
-
-				bool scoringMarked = false;
-				bool playMakingMarked = false;
-				bool perimDMarked = false;
-				bool inD = false;
-				bool shootingMarked = false;
-
-				bool menu = false;
-				while (!menu){
-					cout << "Enter ALL desired team needs before hitting finish." << endl;
-					cout << "1. Scoring" << endl;
-					cout << "2. Playmaking" << endl;
-					cout << "3. Perimeter Defense" << endl;
-					cout << "4. Interior Defense" << endl;
-					cout << "5. Shooting" << endl;
-					cout << "6. Finished" << endl;
-
-					cin >> choice;
-					switch(choice){
-						case 1:
-							if (!scoringMarked){
-								cout << "Scoring added." << endl;
-								ht.printTable();
-								vector<player*> scorers = ht.getNthBucket(0);
-								for (int i = 0; i < scorers.size(); i++){
-									cout << scorers[i]->name << endl;
-								}
-								scoringMarked = true;
-							}
-							else{
-								cout << "Scoring already added. " << endl;
-							}
-
-						break;
-
-						case 2:
-							cout << "Playmaking added." << endl;
-
-						break;
-
-						case 3:
-							cout << "Perimeter Defense added." << endl;
-
-						break;
-
-						case 4:
-							cout << "Interior Defense added." << endl;
-						break;
-
-						case 5:
-							cout << "Shooting added." << endl;
-						break;
-
-						case 6: 
-							menu = true;
-						break;
-					}
-				}
-				//print recommended prospects
-			}
-			break;
-
-			case 3:
-		    {
-		        string n = "";
-		        cout << "Enter player name: " << endl;
-		        cin.ignore();
-		        getline(cin, n);
-		        curr = t.findPlayer(n);
-		        if(curr!=NULL)
-		        {
-		          int choice;
-		          bool menu = false;
-		          while(menu==false)
-		          {
-		            cout << "1. View Stats" << endl << "2. Draft Player" << endl <<"3. Discard" << endl;
-		            cin >> choice;
-		            switch(choice)
-		            {
-		              case 1:
-		              {
-		                t.printPlayerStat(n);
-		                break;
-		              }
-		              case 2:
-		              {
-		                cout << curr->name << ", " << curr->position
-		        				<< ", " << curr->college << ", " << curr->ppg << " ppg, "
-		        				<< curr->rpg << " rpg, " << curr->apg << " astpg "
-		        				<< "---- drafted " << pickCount << " overall." << endl;
-								h.draftPlayer(curr->name);
-		                		t.deletePlayer(n);
-		                		ht.deletePlayer(curr);
-		                		menu = true;
-		                break;
-		              }
-		              case 3:
-		              {
-		                menu = true;
-		              }
-		            }
-		          }
-		        }
-		        else
-		        {
-		          cout <<  n << " Not Found" << endl;
-		        }
-						//call for BST
+					pickOver = true;
+				}	
 				break;
-		      }
 
-			case 4:
-				//exits from menu
-			openMenu = false;
-			break;
+				case 2:
+				{	
+					int choice;
+					bool recsEntered = false;
+					bool scoringMarked = false;
+					bool playMakingMarked = false;
+					bool perimDMarked = false;
+					bool inDMarked = false;
+					bool shootingMarked = false;
 
-		}
+					//MaxHeap recs(50);
 
+					bool menu = false;
+					while (!menu){
+						cout << "Enter ALL desired team needs before hitting finish." << endl;
+						cout << "1. Scoring" << endl;
+						cout << "2. Playmaking" << endl;
+						cout << "3. Perimeter Defense" << endl;
+						cout << "4. Interior Defense" << endl;
+						cout << "5. Shooting" << endl;
+						cout << "6. Finished" << endl;
+
+						cin >> choice;
+						switch(choice){
+							case 1:
+								if (!scoringMarked){
+									cout << "Scoring added." << endl;
+									vector<player*> scorers = ht.getNthBucket(1);
+									for (int i = 0; i < scorers.size(); i++){
+										//recs.insertPlayer(scorers[i]);
+									player* current = scorers[i];
+
+									player* newPlayer = new player(current->name, current->position, current->grade, current->college, 
+									current->ppg, current->fgp, current->threeptp, current->ftp, current->apg, current->rpg, current->spg, current->bpg,
+									current->tovpg, current->astto, current->stlto, current->blkto, current->sceff, current->sheff, current->pfpg, current->gamesPlayed);
+
+									newPlayer->aggregateScore = current->aggregateScore;
+									recs.insertPlayer(newPlayer);
+
+									}
+									scoringMarked = true;
+									recsEntered = true;
+
+									//ht.printTable();
+								}
+								else{
+									cout << "Scoring already added. " << endl;
+								}
+
+							break;
+
+							case 2:
+								if (!playMakingMarked){
+									vector<player*> playmakers = ht.getNthBucket(2);
+									for (int i = 0; i < playmakers.size(); i++){
+										//recs.insertPlayer(playmakers[i]);
+										player* current = playmakers[i];
+
+										player* newPlayer = new player(current->name, current->position, current->grade, current->college, 
+										current->ppg, current->fgp, current->threeptp, current->ftp, current->apg, current->rpg, current->spg, current->bpg,
+										current->tovpg, current->astto, current->stlto, current->blkto, current->sceff, current->sheff, current->pfpg, current->gamesPlayed);
+
+										newPlayer->aggregateScore = current->aggregateScore;
+										recs.insertPlayer(newPlayer);
+									}
+									cout << "Playmaking added." << endl;
+									playMakingMarked = true;
+									recsEntered = true;
+
+									//ht.printTable();
+								}
+								else{
+									cout << "Playmaking already added" << endl;
+								}
+
+							break;
+
+							case 3:
+								if (!perimDMarked){
+									vector<player*> pDefenders = ht.getNthBucket(3);
+									for (int i = 0; i < pDefenders.size(); i++){
+										//recs.insertPlayer(pDefenders[i]);
+										player* current = pDefenders[i];
+
+										player* newPlayer = new player(current->name, current->position, current->grade, current->college, 
+										current->ppg, current->fgp, current->threeptp, current->ftp, current->apg, current->rpg, current->spg, current->bpg,
+										current->tovpg, current->astto, current->stlto, current->blkto, current->sceff, current->sheff, current->pfpg, current->gamesPlayed);
+
+										newPlayer->aggregateScore = current->aggregateScore;
+
+										recs.insertPlayer(newPlayer);
+									}
+									cout << "Perimeter Defense added." << endl;
+									perimDMarked = true;
+									recsEntered = true;
+									//ht.printTable();
+								}
+								else{
+									cout << "Perimeter Defense already added." << endl;
+								}
+
+							break;
+
+							case 4:
+								if (!inDMarked){
+									vector<player*> inDefenders = ht.getNthBucket(4);
+									for (int i = 0; i < inDefenders.size(); i++){
+										//recs.insertPlayer(inDefenders[i]);
+										player* current = inDefenders[i];
+
+										player* newPlayer = new player(current->name, current->position, current->grade, current->college, 
+										current->ppg, current->fgp, current->threeptp, current->ftp, current->apg, current->rpg, current->spg, current->bpg,
+										current->tovpg, current->astto, current->stlto, current->blkto, current->sceff, current->sheff, current->pfpg, current->gamesPlayed);
+
+										newPlayer->aggregateScore = current->aggregateScore;
+
+										recs.insertPlayer(newPlayer);
+									}
+									cout << "Interior Defense added." << endl;
+									inDMarked = true;
+									recsEntered = true;
+									//ht.printTable();
+								}
+								else{
+									cout << "Interior Defense already added." << endl;
+								}
+							break;
+
+							case 5:
+								if (!shootingMarked){
+									vector<player*> shooters = ht.getNthBucket(5);
+									for (int i = 0; i < shooters.size(); i++){
+										//recs.insertPlayer(shooters[i]);
+										player* current = shooters[i];
+
+										player* newPlayer = new player(current->name, current->position, current->grade, current->college, 
+										current->ppg, current->fgp, current->threeptp, current->ftp, current->apg, current->rpg, current->spg, current->bpg,
+										current->tovpg, current->astto, current->stlto, current->blkto, current->sceff, current->sheff, current->pfpg, current->gamesPlayed);
+
+										newPlayer->aggregateScore = current->aggregateScore;
+
+										recs.insertPlayer(newPlayer);
+									}
+									cout << "Shooting added." << endl;
+									shootingMarked = true;
+									recsEntered = true;
+									//ht.printTable();
+								}
+								else{
+									cout << "Shooting already added." << endl;
+								}
+							break;
+
+							case 6: 
+								menu = true;
+							break;
+						}
+					}
+					//printing reccomended prospects
+					if (recsEntered){
+							cout << endl;
+							cout << "Top reccomendations: " << endl;
+
+							vector<player*> temp;
+
+							for (int i = 0; i < 5; i++){
+								player* curr = recs.extractMax();
+								temp.push_back(curr);
+
+								if (curr != NULL){
+									cout << curr->name << ", " << curr->position
+									<< ", " << curr->college << ", " << curr->ppg << " ppg, "
+									<< curr->rpg << " rpg, " << curr->apg << " astpg" << endl;
+								}
+								else if (curr == NULL){
+									break;
+								}
+							}
+
+							for (int i = 0; i < temp.size(); i++){
+								recs.insertPlayer(temp[i]);
+							}
+					}
+
+				}
+				break;
+
+				case 3:
+			    {
+			        string n = "";
+			        cout << "Enter player name: " << endl;
+
+			        cin.ignore();
+			        getline(cin, n);
+
+			        player* curr = t.findPlayer(n);
+			        string name = curr->name;
+			        if(curr!=NULL)
+			        {
+			          int choice;
+			          bool menu = false;
+			          while(menu==false)
+			          {
+			            cout << "1. View Stats" << endl << "2. Draft Player" << endl <<"3. Discard" << endl;
+			            cin >> choice;
+			            switch(choice)
+			            {
+			              case 1:
+			              {
+			                t.printPlayerStat(n);
+			                break;
+			              }
+			              case 2:
+			              {
+			                cout << curr->name << ", " << curr->position
+			        				<< ", " << curr->college << ", " << curr->ppg << " ppg, "
+			        				<< curr->rpg << " rpg, " << curr->apg << " astpg "
+			        				<< "---- drafted " << pickCount + 1<< " overall." << endl;
+									h.draftPlayer(curr->name);
+			                		t.deletePlayer(n);
+			                		ht.deletePlayer(name);
+			                		menu = true;
+			                		pickOver = true;
+			                break;
+			              }
+			              case 3:
+			              {
+			                menu = true;
+			              }
+			            }
+			          }
+			        }
+			        else
+			        {
+			          cout <<  n << " Not Found" << endl;
+			        }
+						
+					break;
+			      }
+
+				case 4:
+					//exits from menu
+				pickOver = true;
+				openMenu = false;
+				break;
+
+
+				//ht.printTable();
+			}
+		}	
 		cout << endl;
 		cout << "---------------------------------------" << endl;
 		cout << "Top Available Prospects: " << endl;
@@ -367,12 +494,14 @@ int main(){
 	vector<player*> builder;
 
 	player* curr = best.extractMax();
+
 	while (curr != NULL){
 		builder.push_back(curr);
 		player* newPlayer = new player(curr->name, curr->position, curr->grade, curr->college, 
 		curr->ppg, curr->fgp, curr->threeptp, curr->ftp, curr->apg, curr->rpg, curr->spg, curr->bpg,
 		curr->tovpg, curr->astto, curr->stlto, curr->blkto, curr->sceff, curr->sheff, curr->pfpg, curr->gamesPlayed);
 
+		newPlayer->aggregateScore = curr->aggregateScore;
 
 		playerMap.insertItem(newPlayer);
 		curr = best.extractMax();
