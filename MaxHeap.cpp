@@ -25,24 +25,21 @@ MaxHeap::~MaxHeap(){
 /*
 Finds the parent of a node, given its index.
 */
-int MaxHeap::parent(int index)
-{
+int MaxHeap::parent(int index){
   return (index-1)/2;
 }
 
 /*
 Returns the left child of a node.
 */
-int MaxHeap::leftChild(int index)
-{
+int MaxHeap::leftChild(int index){
   return ((2*index) + 1);
 }
 
 /*
 Returns the right child of a node.
 */
-int MaxHeap::rightChild(int index)
-{
+int MaxHeap::rightChild(int index){
   return ((2*index) + 2);
 }
 
@@ -51,8 +48,8 @@ int MaxHeap::getCurrentSize(){
 }
 
 player* MaxHeap::createPlayer(string s[], double d[]){ //params: arrays passed in from main, read from file
-	player* newPlayer = new player;
-	//struct data is filled in by arrays, filled by reading the file
+	player* newPlayer = new player; //struct data is filled in by arrays, filled by reading the file
+
 	newPlayer->name = s[0];
 	newPlayer->position = s[1];
 	if (s[2] == "Freshman" || s[2] == "International" || s[2] == "N/A"){ //handling grade, string->int value
@@ -138,7 +135,7 @@ player* MaxHeap::createPlayer(string s[], double d[]){ //params: arrays passed i
   
 	insertPlayer(newPlayer); //inserts player into heap
 
-}    //call insertPlayer() in this
+}    
 
 void MaxHeap::insertPlayer(player* p){
 	if(currentSize == capacity)
@@ -154,7 +151,6 @@ void MaxHeap::insertPlayer(player* p){
 	//repairing upwards
 	while (index != 0 && heapArr[parent(index)]->aggregateScore <= heapArr[index]->aggregateScore)
 	{
-		//swap(&heapArr[index], &heapArr[parent(index)]);
 		if (heapArr[parent(index)]->aggregateScore == heapArr[index]->aggregateScore){
 			if (heapArr[parent(index)]->ppg < heapArr[index]->ppg){
 				swap(*&heapArr[index], *&heapArr[parent(index)]);
@@ -169,7 +165,6 @@ void MaxHeap::insertPlayer(player* p){
 
 player* MaxHeap::extractMax(){ //removes and returns node at the top
 	if (currentSize <= 0){
-		//cout << "ERROR: EMPTY" << endl;
 		return NULL;
 	}
 
@@ -237,6 +232,7 @@ void MaxHeap::draftPlayer(string name) //essentially node deletion
 	int spot = draftPlayerHelper(name);
 	heapArr[spot] = heapArr[currentSize-1];
 	currentSize--;
+	
 	maxHeapify(spot); //maintains heap charcteristics
 }
 

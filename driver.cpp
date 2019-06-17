@@ -42,6 +42,7 @@ void printInstructions(){
 void displayStartingMenu(){
 	for (int i = 0; i < 10; i++)
 		cout << endl;
+
 	cout << "-----------------------------------------------------" << endl;
 	cout << "Welcome to the D'ANGELO NBA Draft emulator- " << endl;
 	cout << "a tool for scouting the next generation of NBA talent" << endl;
@@ -72,6 +73,7 @@ void displayStartingMenu(){
 			cout << "invalid input." << endl;
 		}
 	}
+
 }
 
 int displayDraftMenu(MaxHeap &h, PlayerTree &t, HashTable ht){
@@ -85,8 +87,10 @@ int displayDraftMenu(MaxHeap &h, PlayerTree &t, HashTable ht){
 
 	for (int i = 0; i < 10; i++){
 		cout << i+1 << ". ";
+		
 		player* curr = h.extractMax();
 		temp.push_back(curr); //makes sure nodes are kept
+
 		cout << curr->name << ", " << curr->position
 		<< ", " << curr->college << ", " << curr->ppg << " ppg, "
 		<< curr->rpg << " rpg, " << curr->apg << " astpg" << endl;
@@ -127,7 +131,8 @@ int displayDraftMenu(MaxHeap &h, PlayerTree &t, HashTable ht){
 			cout << "3. Search for Desired Player" << endl;
 			cout << "4. Quit draft" << endl;
 			cout << "--------------------------------------" << endl;
-    	cin >> userInput;
+
+    		cin >> userInput;
 
 			switch(userInput){
 				case 1: //auto drafts best available player
@@ -136,10 +141,12 @@ int displayDraftMenu(MaxHeap &h, PlayerTree &t, HashTable ht){
 					player* curr = h.extractMax();
 					string name = curr->name;
 					t.deletePlayer(curr->name);
+
 					cout << curr->name << ", " << curr->position
 					<< ", " << curr->college << ", " << curr->ppg << " ppg, "
 					<< curr->rpg << " rpg, " << curr->apg << " astpg "
 					<< "---- drafted " << pickCount + 1 << " overall." << endl;
+
 					ht.deletePlayer(name);
 
 					pickOver = true;
@@ -149,6 +156,7 @@ int displayDraftMenu(MaxHeap &h, PlayerTree &t, HashTable ht){
 				case 2:
 				{
 					int choice;
+					
 					//bools to ensure duplicate team needs are not entered
 					bool recsEntered = false;
 					bool scoringMarked = false;
@@ -192,7 +200,6 @@ int displayDraftMenu(MaxHeap &h, PlayerTree &t, HashTable ht){
 								else{
 									cout << "Scoring already added. " << endl;
 								}
-
 							break;
 
 							case 2:
@@ -216,7 +223,6 @@ int displayDraftMenu(MaxHeap &h, PlayerTree &t, HashTable ht){
 								else{
 									cout << "Playmaking already added" << endl;
 								}
-
 							break;
 
 							case 3:
@@ -240,7 +246,6 @@ int displayDraftMenu(MaxHeap &h, PlayerTree &t, HashTable ht){
 								else{
 									cout << "Perimeter Defense already added." << endl;
 								}
-
 							break;
 
 							case 4:
@@ -325,16 +330,17 @@ int displayDraftMenu(MaxHeap &h, PlayerTree &t, HashTable ht){
 
 				case 3: //searching, calls BST functions
 			    {
-			        string n = "";
+			        string n;
 			        cout << "Enter player name: " << endl;
 
 			        cin.ignore();
 			        getline(cin, n);
-
+ 
 			        player* curr = t.findPlayer(n);
-			        string name = curr->name;
+
 			        if(curr!=NULL)
 			        {
+			          string name = curr->name;
 			          int choice;
 			          bool menu = false;
 			          while(menu==false)
@@ -377,12 +383,10 @@ int displayDraftMenu(MaxHeap &h, PlayerTree &t, HashTable ht){
 			      }
 
 				case 4:
-					//exits from menu
+				//exits from menu
 				pickOver = true;
 				openMenu = false;
 				break;
-
-
 			}
 		}
 		cout << endl;
@@ -442,8 +446,10 @@ int main(){
 	PlayerTree tree;
 
 	vector<string> components; //temp vector for reading in strings from file
+
 	string strComponents[5]; //array for storing string components read from file
 	int strCnt = 0;
+	
 	double dblComponents[15]; //array for storing double components read from file
 	int dblCnt = 0;
 
@@ -501,6 +507,8 @@ int main(){
 	}
 
 	int choice = displayDraftMenu(best, tree, playerMap); //starts the draft
+
+	//bugfix: maybe deletion is coon'd cuz it's being deleted in the method?
 
 	return 0;
 }

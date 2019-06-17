@@ -12,10 +12,12 @@ PlayerTree::PlayerTree() //constructor for the root of the tree
 {
   root = nullptr;
 }
+
 PlayerTree::~PlayerTree() //destructor for the tree
 {
   destroyRoster(root);
 }
+
 void PlayerTree::destroyRoster(player *currNode) //helper for the tree destructor
 {
   if(currNode!=NULL)
@@ -27,27 +29,30 @@ void PlayerTree::destroyRoster(player *currNode) //helper for the tree destructo
       currNode = NULL;
   }
 }
+
 void print(player *root) //helper function for the print function
 {
     if(root==NULL)
     {
-        return;
+      return;
     }
     if (root->left != NULL)
-	{
-		print(root->left);
-	}
-		cout << "Player: " << root->name << endl;
+    {
+    print(root->left);
+    }
+      cout << "Player: " << root->name << endl;
 
-	if (root->right != NULL)
-	{
-		print(root->right);
-	}
+    if (root->right != NULL)
+    {
+      print(root->right);
+    }
 }
+
 void PlayerTree::printRoster() //prints all players, used for testing
 {
     print(root);
 }
+
 player *spot(player *temp, string name) //returns the spot of where in the tree to add the player
 {
 
@@ -58,7 +63,7 @@ player *spot(player *temp, string name) //returns the spot of where in the tree 
             temp=spot(temp->right, name);
         }
 
-            return temp;
+        return temp;
 
     }
     else if(name < temp->name)
@@ -68,10 +73,11 @@ player *spot(player *temp, string name) //returns the spot of where in the tree 
             temp=spot(temp->left, name);
         }
 
-            return temp;
+        return temp;
 
     }
 }
+
 void PlayerTree::addPlayer(string s[], double d[]) //adds a player to the tree of players
 {
   int g;
@@ -108,49 +114,54 @@ void PlayerTree::addPlayer(string s[], double d[]) //adds a player to the tree o
 
 }
 
-void PlayerTree::printPlayerStat(string name) //prints the player stats for user viewing
+void PlayerTree::printPlayerStatHelper(string name, player* node) //prints the player stats for user viewing
 {
-  if(root==NULL)
+  if(node==NULL)
   {
     cout << "Player not found." << endl;
-      return;
+    return;
   }
-  if(root->name == name)
+  if(node->name == name)
   {
       cout << "Player Stats:" << endl;
       cout << "==================" << endl;
-      cout << "Name:" << root->name << endl;
-      cout << "Position: " << root->position << endl;
-      cout << "College: " << root->college << endl;
-      cout << "Points Per Game: " << root->ppg << endl;
-      cout << "Field Goal Percentage: " << root->fgp << endl;
-      cout << "3-pointer percentage: " << root->threeptp << endl;
-      cout << "Free Throw Percentage: " << root->ftp << endl;
-      cout << "Assists Per Game: " << root->apg << endl;
-      cout << "Rebounds Per Game: " << root->rpg << endl;
-      cout << "Steals Per Game: " << root->spg << endl;
-      cout << "Blocks Per Game: " << root->bpg << endl;
-      cout << "Turnovers Per Game: " << root->tovpg << endl;
-      cout << "Assist to Turnover Ratio: " << root->astto << endl;
-      cout << "Steal to Turnover Ratio: " << root->stlto << endl;
-      cout << "Block to Turnover Ratio: " << root->blkto << endl;
-      cout << "Scoring Efficency: " << root->sceff << endl;
-      cout << "Shooting Efficency: " << root->sheff << endl;
-      cout << "Personal Fouls Per Game: " << root->pfpg << endl;
-      cout << "Total Games Played: " << root->gamesPlayed << endl;
+      cout << "Name:" << node->name << endl;
+      cout << "Position: " << node->position << endl;
+      cout << "College: " << node->college << endl;
+      cout << "Points Per Game: " << node->ppg << endl;
+      cout << "Field Goal Percentage: " << node->fgp << endl;
+      cout << "3-pointer percentage: " << node->threeptp << endl;
+      cout << "Free Throw Percentage: " << node->ftp << endl;
+      cout << "Assists Per Game: " << node->apg << endl;
+      cout << "Rebounds Per Game: " << node->rpg << endl;
+      cout << "Steals Per Game: " << node->spg << endl;
+      cout << "Blocks Per Game: " << node->bpg << endl;
+      cout << "Turnovers Per Game: " << node->tovpg << endl;
+      cout << "Assist to Turnover Ratio: " << node->astto << endl;
+      cout << "Steal to Turnover Ratio: " << node->stlto << endl;
+      cout << "Block to Turnover Ratio: " << node->blkto << endl;
+      cout << "Scoring Efficency: " << node->sceff << endl;
+      cout << "Shooting Efficency: " << node->sheff << endl;
+      cout << "Personal Fouls Per Game: " << node->pfpg << endl;
+      cout << "Total Games Played: " << node->gamesPlayed << endl;
       cout << "==================" << endl;
   }
-  else if(root->name.compare(name) > 0)
+  else if(node->name.compare(name) > 0)
   {
-    root = root->left;
-    printPlayerStat(name);
+    node = node->left;
+    printPlayerStatHelper(name, node);
   }
   else
   {
-    root = root->right;
-    printPlayerStat(name);
+    node = node->right;
+    printPlayerStatHelper(name, node);
   }
 }
+
+void PlayerTree::printPlayerStat(string name){
+  printPlayerStatHelper(name, root);
+}
+
 player* getMinValueNode(player* currNode) //minds the player with the smallest aggregate score
 {
     if(currNode->left == NULL){
@@ -161,24 +172,23 @@ player* getMinValueNode(player* currNode) //minds the player with the smallest a
 
 player* findPlayerHelper(player* currNode, string name) //helper function to search for a player
 {
-  if(currNode == NULL)
-      return NULL;
-
-  if(currNode->name == name)
-      return currNode;
-
-  if(currNode->name > name)
-      return findPlayerHelper(currNode->left, name);
-
-  return findPlayerHelper(currNode->right, name);
+  if (currNode == NULL || currNode->name == name){
+    return currNode;
+  }
+  else if (currNode->name < name){
+    return findPlayerHelper(currNode->right, name);
+  }
+  else{
+    return findPlayerHelper(currNode->left, name);
+  }
 }
 
 player* PlayerTree::findPlayer(string name) //finds a player by name for the user to draft, discard, or view stats
 {
-  player* temp = root;
-  player *s = findPlayerHelper(temp, name);
-  return s;
+  player *ret = findPlayerHelper(root, name);
+  return ret;
 }
+
 player* PlayerTree::deletePlayerHelper(player *currNode, string value) //helps take out a player from the tree
 {
 
@@ -222,10 +232,12 @@ player* PlayerTree::deletePlayerHelper(player *currNode, string value) //helps t
      }
    return currNode;
 }
+
 void PlayerTree::deletePlayer(string v) //deletes player from the tree if they have been drafted
 {
   deletePlayerHelper(root, v);
 }
+
 void printRosterTreeHelper(player *currNode, int space) //helper to print the entire roster of prospects
 {
     if (currNode == NULL)

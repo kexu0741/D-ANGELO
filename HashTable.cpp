@@ -27,7 +27,7 @@ player* HashTable::createNode(string s[], double d[]) //instantiating a node man
 
     return add;
 }
-//
+
 HashTable::HashTable(int bsize)
 {
     this->tableSize= bsize;
@@ -80,6 +80,7 @@ player* HashTable::searchItem(player* p)
     //Compute the index by using the hash function
     int index = hashFunction(p);
     player *temp = hashTable[index];
+
     while(temp!=NULL)
     {
       if(temp==p)
@@ -88,6 +89,7 @@ player* HashTable::searchItem(player* p)
       }
       temp = temp->next;
     }
+
     return NULL;
 }
 
@@ -119,13 +121,14 @@ void HashTable::printTable() //utility function, iterates through each bucket an
     for (int i = 0; i < tableSize; i++) {
         player *temp = hashTable[i];
         cout << i <<"|| ";
+
         while(temp)
         {
           cout << temp->name << "--->";
           temp = temp->next;
         }
+        
         cout << endl;
-        //TODO
     }
 }
 
