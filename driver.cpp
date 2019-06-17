@@ -507,8 +507,6 @@ int main(){
 	}
 
 	int choice = displayDraftMenu(best, tree, playerMap); //starts the draft
-
-	//bugfix: maybe deletion is coon'd cuz it's being deleted in the method?
-
+	
 	return 0;
 }
